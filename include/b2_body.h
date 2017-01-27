@@ -23,6 +23,9 @@ public:
 
     b2WorldRef get_world() const;
 
+    /** Auxiliary methods */
+    void destroy();
+
 protected:
     /** Godot bindings */
 	static void _bind_methods();

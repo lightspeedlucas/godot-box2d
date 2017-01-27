@@ -9,9 +9,6 @@ class b2WorldWrapper : public Reference
     WRAP_BOX2D(b2World);
 public:
     /** Box2D methods */
-    b2BodyRef create_body(class b2BodyDefinition*);
-    void destroy_body(class b2BodyWrapper*);
-
     void step(float timeStep, int velocityIterations, int positionIterations);
 
     Vector2 get_gravity() const;
@@ -19,7 +16,7 @@ public:
 
     bool is_locked() const;
 
-    /** Helpers methods */
+    /** Auxiliary methods */
     void destroy();
 
 protected:

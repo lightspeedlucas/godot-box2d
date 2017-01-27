@@ -7,14 +7,14 @@
 #include <Box2D/Box2D.h>
 
 /***********************************************************************
- * Wraps a Box2D type
+ * Helpers macros
  **********************************************************************/
+
 #define WRAP_BOX2D(type) private: type *wrapped; \
     public: inline type##Wrapper(type *o) : wrapped(o) {} \
     operator type*() const { return wrapped; } \
+    type *operator->() { return wrapped; } \
     inline static Ref<type##Wrapper> wrap(type *o) { return o ? memnew(type##Wrapper(o)) : NULL; }
-
-#define BOX2D_REF(type, value) type##Wrapper::wrap(value)
 
 #define WRAP_BOX2D_DEF(type) private: type wrapped; \
     public: inline type##inition() {} \
@@ -34,9 +34,15 @@
     ObjectTypeDB::bind_method(_MD("set_" #name, "value:" #type), &cls::set_##name); \
     ADD_PROPERTY(PropertyInfo(Variant::type, #name), _SCS("set_" #name), _SCS("get_" #name));
 
+#define BOX2D_GD(type) static inline Ref<type##Wrapper> GD(type *o) { return type##Wrapper::wrap(o); }
+
+#define BOX2D_DECL(type) class type##Wrapper; class type##Definition; \
+    typedef Ref<type##Wrapper> type##Ref;
+
 /***********************************************************************
  * Enable conversion from Variant to any class derived from Object
  **********************************************************************/
+
 template<class O>
 struct VariantCaster<O*>
 {
@@ -48,19 +54,24 @@ struct VariantCaster<O*>
 };
 
 /***********************************************************************
- * 2D Math interoperability
+ * Math interoperability
  **********************************************************************/
+
 static inline b2Vec2 B2(const Vector2 &v) { return b2Vec2(v.x, v.y); }
 static inline Vector2 GD(const b2Vec2 &v) { return Vector2(v.x, v.y); }
 
 /***********************************************************************
  * Include entities
  **********************************************************************/
-typedef Ref<class b2WorldWrapper> b2WorldRef;
-typedef Ref<class b2BodyWrapper> b2BodyRef;
+
+BOX2D_DECL(b2World);
+BOX2D_DECL(b2Body);
 
 #include "b2_world.h"
 #include "b2_body.h"
+
+BOX2D_GD(b2World);
+BOX2D_GD(b2Body);
 
 /***********************************************************************
  * Type Factory
@@ -78,6 +89,7 @@ public:
 
     /** Box2D methods */
     b2WorldRef world(const Vector2 &gravity);
+    b2BodyRef body(b2WorldWrapper *world, b2BodyDefinition *def);
 
 protected:
     /** Godot bindings */

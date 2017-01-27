@@ -2,18 +2,6 @@
 #include <godot_box2d.h>
 #include "b2_world.h"
 
-b2BodyRef b2WorldWrapper::create_body(b2BodyDefinition *def)
-{
-    ERR_FAIL_NULL_V(def, NULL);
-    return BOX2D_REF(b2Body, wrapped->CreateBody(*def));
-}
-
-void b2WorldWrapper::destroy_body(b2BodyWrapper *body)
-{
-    ERR_FAIL_NULL(body);
-    wrapped->DestroyBody(*body);
-}
-
 void b2WorldWrapper::step(float timeStep, int velocityIterations, int positionIterations)
 {
     wrapped->Step(timeStep, velocityIterations, positionIterations);
@@ -41,9 +29,6 @@ void b2WorldWrapper::destroy()
 
 void b2WorldWrapper::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("create_body:b2BodyWrapper", "def:b2BodyDefinition"), &b2WorldWrapper::create_body);
-    ObjectTypeDB::bind_method(_MD("destroy_body", "body:b2BodyWrapper"), &b2WorldWrapper::destroy_body);
-
     ObjectTypeDB::bind_method(_MD("step", "timeStep:real", "velocityIterations:int", "positionIterations:int"), &b2WorldWrapper::step);
 
     ObjectTypeDB::bind_method(_MD("get_gravity"), &b2WorldWrapper::get_gravity);

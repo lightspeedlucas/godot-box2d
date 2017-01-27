@@ -16,7 +16,14 @@ Box2DFactory::~Box2DFactory()
 
 b2WorldRef Box2DFactory::world(const Vector2 &gravity)
 {
-    return BOX2D_REF(b2World, new b2World(B2(gravity)));
+    return GD(new b2World(B2(gravity)));
+}
+
+b2BodyRef Box2DFactory::body(b2WorldWrapper *world, b2BodyDefinition *def)
+{
+    ERR_FAIL_NULL_V(world, NULL);
+    ERR_FAIL_NULL_V(def, NULL);
+    return GD((*world)->CreateBody(*def));
 }
 
 void Box2DFactory::_bind_methods()

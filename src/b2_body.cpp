@@ -29,7 +29,7 @@ int b2BodyWrapper::get_body_type() const
 
 b2BodyRef b2BodyWrapper::get_next() const
 {
-    return BOX2D_REF(b2Body, wrapped->GetNext());
+    return GD(wrapped->GetNext());
 }
 
 Object *b2BodyWrapper::get_user_data() const
@@ -44,7 +44,12 @@ void b2BodyWrapper::set_user_data(Object *data)
 
 b2WorldRef b2BodyWrapper::get_world() const
 {
-    return BOX2D_REF(b2World, wrapped->GetWorld());
+    return GD(wrapped->GetWorld());
+}
+
+void b2BodyWrapper::destroy()
+{
+    wrapped->GetWorld()->DestroyBody(wrapped);
 }
 
 void b2BodyWrapper::_bind_methods()
@@ -64,6 +69,8 @@ void b2BodyWrapper::_bind_methods()
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "user_data"), _SCS("set_user_data"), _SCS("get_user_data"));    
 
     ObjectTypeDB::bind_method(_MD("get_world:b2WorldWrapper"), &b2BodyWrapper::get_world);
+
+    ObjectTypeDB::bind_method(_MD("destroy"), &b2BodyWrapper::destroy);
 }
 
 void b2BodyDefinition::_bind_methods()

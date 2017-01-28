@@ -24,7 +24,6 @@ public:
     void refilter();
 
     class BodyB2 *get_body() const;
-    FixtureB2 *get_next() const;
 
     Variant get_metadata() const;
     void set_metadata(const Variant&);
@@ -32,9 +31,7 @@ public:
     bool test_point(const Vector2&) const;
     Dictionary ray_cast(const Vector2 &a, const Vector2 &b, int child = 0) const;
 
-    float get_mass() const;
-    Vector2 get_center_of_mass() const;
-    float get_moment() const;
+    Dictionary get_mass_data() const;
 
     float get_density() const;
     void set_density(float);

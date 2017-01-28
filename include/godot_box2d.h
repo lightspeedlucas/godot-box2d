@@ -20,6 +20,15 @@
     ObjectTypeDB::bind_method(_MD("set_" #name, "value:" typename), &cls::set_##name); \
     ADD_PROPERTY(PropertyInfo(type, #name), _SCS("set_" #name), _SCS("get_" #name));
 
+#define BOX2D_PROPERTY_ENUM(cls, name, enum) \
+    ObjectTypeDB::bind_method(_MD("get_" #name ":" enum), &cls::get_##name); \
+    ObjectTypeDB::bind_method(_MD("set_" #name, "value:" enum), &cls::set_##name); \
+    ADD_PROPERTY(PropertyInfo(Variant::INT, #name, PROPERTY_HINT_ENUM, #enum), _SCS("set_" #name), _SCS("get_" #name));
+
+#define BOX2D_PROPERTY_BOOL(cls, name) \
+    ObjectTypeDB::bind_method(_MD("is_" #name ":bool"), &cls::is_##name); \
+    ObjectTypeDB::bind_method(_MD("set_" #name, "value:bool"), &cls::set_##name); \
+    ADD_PROPERTY(PropertyInfo(Variant::BOOL, #name), _SCS("set_" #name), _SCS("is_" #name));
 
 #define WRAP_BOX2D(type) private: type *wrapped; \
     public: inline type##Wrapper(type *o) : wrapped(o) {} \
@@ -70,6 +79,8 @@ struct VariantCaster<O*>
 
 struct b2Vec2 B2(const struct Vector2&);
 struct Vector2 GD(const struct b2Vec2&);
+
+struct b2AABB B2(const struct Rect2&);
 struct Rect2 GD(const struct b2AABB&);
 
 /***********************************************************************

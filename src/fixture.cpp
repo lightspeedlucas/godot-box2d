@@ -73,11 +73,6 @@ BodyB2 *FixtureB2::get_body() const
     return BodyB2::get(entity->GetBody());
 }
 
-FixtureB2 *FixtureB2::get_next() const
-{
-    return FixtureB2::get(entity->GetNext());
-}
-
 Variant FixtureB2::get_metadata() const
 {
     return metadata;
@@ -108,25 +103,16 @@ Dictionary FixtureB2::ray_cast(const Vector2 &a, const Vector2 &b, int child) co
     return r;
 }
 
-float FixtureB2::get_mass() const
+Dictionary FixtureB2::get_mass_data() const
 {
     b2MassData data;
     entity->GetMassData(&data);
-    return data.mass;
-}
 
-Vector2 FixtureB2::get_center_of_mass() const
-{
-    b2MassData data;
-    entity->GetMassData(&data);
-    return GD(data.center);
-}
-
-float FixtureB2::get_moment() const
-{
-    b2MassData data;
-    entity->GetMassData(&data);
-    return data.I;
+    Dictionary r(true);
+    r["mass"] = data.mass;
+    r["center"] = GD(data.center);
+    r["inertia"] = data.I;
+    return r;
 }
 
 float FixtureB2::get_density() const
@@ -177,16 +163,13 @@ void FixtureB2::_bind_methods()
     ObjectTypeDB::bind_method(_MD("refilter"), &FixtureB2::refilter);
 
     ObjectTypeDB::bind_method(_MD("get_body:BodyB2"), &FixtureB2::get_body);
-    ObjectTypeDB::bind_method(_MD("get_next:FixtureB2"), &FixtureB2::get_next);
 
     BOX2D_PROPERTY(FixtureB2, metadata, Variant::NIL, "Variant");
 
     ObjectTypeDB::bind_method(_MD("test_point:bool", "point:Vector2"), &FixtureB2::test_point);
     ObjectTypeDB::bind_method(_MD("ray_cast:Dictionary", "a:Vector2", "b:Vector2", "childIndex:int"), &FixtureB2::ray_cast, DEFVAL(0));
 
-    ObjectTypeDB::bind_method(_MD("get_mass:real"), &FixtureB2::get_mass);
-    ObjectTypeDB::bind_method(_MD("get_center_of_mass:Vector2"), &FixtureB2::get_center_of_mass);
-    ObjectTypeDB::bind_method(_MD("get_moment:real"), &FixtureB2::get_moment);
+    ObjectTypeDB::bind_method(_MD("get_mass_data:Dictionary"), &FixtureB2::get_mass_data);
 
     BOX2D_PROPERTY(FixtureB2, density, Variant::REAL, "real");
     BOX2D_PROPERTY(FixtureB2, friction, Variant::REAL, "real");

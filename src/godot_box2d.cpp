@@ -38,4 +38,6 @@ void Box2D::_bind_methods()
 
 b2Vec2 B2(const Vector2 &v) { return b2Vec2(v.x, v.y); }
 Vector2 GD(const b2Vec2 &v) { return Vector2(v.x, v.y); }
+
+b2AABB B2(const Rect2 &v) { return b2AABB { B2(v.pos), B2(v.pos + v.size) }; }
 Rect2 GD(const b2AABB &v) { return Rect2(GD(v.lowerBound), GD(v.upperBound - v.lowerBound)); }

@@ -54,7 +54,7 @@ public:
 
 	/// Register a contact filter to provide specific control over collision.
 	/// Otherwise the default filter is used (b2_defaultFilter). The listener is
-	/// owned by you and must remain in scope. 
+	/// owned by you and must remain in scope.
 	void SetContactFilter(b2ContactFilter* filter);
 
 	/// Register a contact event listener. The listener is owned by you and must
@@ -181,7 +181,7 @@ public:
 
 	/// Change the global gravity vector.
 	void SetGravity(const b2Vec2& gravity);
-	
+
 	/// Get the global gravity vector.
 	b2Vec2 GetGravity() const;
 
@@ -208,6 +208,12 @@ public:
 	/// Dump the world into the log file.
 	/// @warning this should be called outside of a time step.
 	void Dump();
+
+	/// Get the user data pointer.
+	void* GetUserData() const;
+
+	/// Set the user data. Use this to store your application specific data.
+	void SetUserData(void* data);
 
 private:
 
@@ -261,6 +267,8 @@ private:
 	bool m_stepComplete;
 
 	b2Profile m_profile;
+
+	void* m_userData;
 };
 
 inline b2Body* b2World::GetBodyList()
@@ -349,6 +357,16 @@ inline const b2ContactManager& b2World::GetContactManager() const
 inline const b2Profile& b2World::GetProfile() const
 {
 	return m_profile;
+}
+
+inline void b2World::SetUserData(void* data)
+{
+	m_userData = data;
+}
+
+inline void* b2World::GetUserData() const
+{
+	return m_userData;
 }
 
 #endif

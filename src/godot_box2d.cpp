@@ -1,32 +1,41 @@
 
-#include "godot_box2d.h"
+#include <godot_box2d.h>
+#include <Box2D/Box2D.h>
 
-Box2DFactory *Box2DFactory::singleton = NULL;
+Box2D *Box2D::singleton = NULL;
 
-Box2DFactory::Box2DFactory()
+Box2D::Box2D()
 {
     ERR_FAIL_COND(singleton);
     singleton = this;
 }
 
-Box2DFactory::~Box2DFactory()
+Box2D::~Box2D()
 {
     singleton = NULL;
 }
 
-b2WorldRef Box2DFactory::world(const Vector2 &gravity)
+WorldB2 *Box2D::world(const Vector2 &gravity)
 {
-    return GD(new b2World(B2(gravity)));
+    auto o = new b2World(B2(gravity));
+    return memnew(WorldB2(o));
 }
 
-b2BodyRef Box2DFactory::body(b2WorldWrapper *world, b2BodyDefinition *def)
+Ref<ShapeB2> Box2D::circle(const Vector2 &offset, float radius)
 {
-    ERR_FAIL_NULL_V(world, NULL);
-    ERR_FAIL_NULL_V(def, NULL);
-    return GD((*world)->CreateBody(*def));
+    auto o = new b2CircleShape;
+    o->m_p = B2(offset);
+    o->m_radius = radius;
+    return memnew(ShapeB2(o));
 }
 
-void Box2DFactory::_bind_methods()
+void Box2D::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("world:b2WorldWrapper", "gravity:Vector2"), &Box2DFactory::world);
+    ObjectTypeDB::bind_method(_MD("world:WorldB2", "gravity:Vector2"), &Box2D::world);
+
+    ObjectTypeDB::bind_method(_MD("circle:ShapeB2", "offset:Vector2", "radius:real"), &Box2D::circle);
 }
+
+b2Vec2 B2(const Vector2 &v) { return b2Vec2(v.x, v.y); }
+Vector2 GD(const b2Vec2 &v) { return Vector2(v.x, v.y); }
+Rect2 GD(const b2AABB &v) { return Rect2(GD(v.lowerBound), GD(v.upperBound - v.lowerBound)); }

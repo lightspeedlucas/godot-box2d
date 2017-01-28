@@ -4,11 +4,22 @@
 #include <object.h>
 #include <reference.h>
 
-#include <Box2D/Box2D.h>
-
 /***********************************************************************
  * Helpers macros
  **********************************************************************/
+
+#define BOX2D_CLASS(name, parent) \
+    private: class b2##name *entity; Variant metadata; \
+    name##B2(class b2##name *); friend class parent; \
+    public: ~name##B2(); \
+    class b2##name *get_b2() const { return entity; } \
+    static name##B2 *get(const b2##name *);
+
+#define BOX2D_PROPERTY(cls, name, type, typename) \
+    ObjectTypeDB::bind_method(_MD("get_" #name ":" typename), &cls::get_##name); \
+    ObjectTypeDB::bind_method(_MD("set_" #name, "value:" typename), &cls::set_##name); \
+    ADD_PROPERTY(PropertyInfo(type, #name), _SCS("set_" #name), _SCS("get_" #name));
+
 
 #define WRAP_BOX2D(type) private: type *wrapped; \
     public: inline type##Wrapper(type *o) : wrapped(o) {} \
@@ -57,46 +68,45 @@ struct VariantCaster<O*>
  * Math interoperability
  **********************************************************************/
 
-static inline b2Vec2 B2(const Vector2 &v) { return b2Vec2(v.x, v.y); }
-static inline Vector2 GD(const b2Vec2 &v) { return Vector2(v.x, v.y); }
+struct b2Vec2 B2(const struct Vector2&);
+struct Vector2 GD(const struct b2Vec2&);
+struct Rect2 GD(const struct b2AABB&);
 
 /***********************************************************************
  * Include entities
  **********************************************************************/
 
-BOX2D_DECL(b2World);
-BOX2D_DECL(b2Body);
-
-#include "b2_world.h"
-#include "b2_body.h"
-
-BOX2D_GD(b2World);
-BOX2D_GD(b2Body);
+#include "world.h"
+#include "body.h"
+#include "fixture.h"
+#include "shape.h"
+#include "joint.h"
 
 /***********************************************************************
  * Type Factory
  **********************************************************************/
-class Box2DFactory : public Object
+class Box2D : public Object
 {
-    OBJ_TYPE(Box2DFactory, Object);
+    OBJ_TYPE(Box2D, Object);
 public:
     /** Lifecycle */
-    Box2DFactory();
-    ~Box2DFactory();
+    Box2D();
+    ~Box2D();
 
     /** Singleton */
-    static Box2DFactory *get() { return singleton; }
+    static Box2D *get() { return singleton; }
 
     /** Box2D methods */
-    b2WorldRef world(const Vector2 &gravity);
-    b2BodyRef body(b2WorldWrapper *world, b2BodyDefinition *def);
+    WorldB2 *world(const Vector2 &gravity);
+
+    Ref<ShapeB2> circle(const Vector2 &offset, float radius);
 
 protected:
     /** Godot bindings */
 	static void _bind_methods();
 
     /** Singleton */
-    static Box2DFactory *singleton;
+    static Box2D *singleton;
 };
 
 #endif

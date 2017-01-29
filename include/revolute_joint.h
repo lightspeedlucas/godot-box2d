@@ -14,23 +14,12 @@ public:
     float get_joint_angle() const;
     float get_joint_speed() const;
 
-    bool is_limit_enabled() const;
-    void set_limit_enabled(bool);
-
-    float get_lower_limit() const;
-    void set_lower_limit(float);
-
-    float get_upper_limit() const;
-    void set_upper_limit(float);
-
-    bool is_motor_enabled() const;
-    void set_motor_enabled(bool);
-
-    float get_motor_speed() const;
-    void set_motor_speed(float);
-
-    float get_max_motor_torque() const;
-    void set_max_motor_torque(float);
+    BOX2D_IS_SET(limit_enabled);
+    BOX2D_GET_SET(float, lower_limit);
+    BOX2D_GET_SET(float, upper_limit);
+    BOX2D_IS_SET(motor_enabled);
+    BOX2D_GET_SET(float, motor_speed);
+    BOX2D_GET_SET(float, max_motor_torque);
 
     float get_motor_torque(float inv_dt) const;
 
@@ -48,32 +37,15 @@ public:
     class JointB2 *instance(class WorldB2*);
 
     /** Getters/setters */
-    Vector2 get_anchor_a() const;
-    void set_anchor_a(const Vector2&);
-
-    Vector2 get_anchor_b() const;
-    void set_anchor_b(const Vector2&);
-
-    float get_reference_angle() const;
-    void set_reference_angle(float);
-
-    bool get_enable_limit() const;
-    void set_enable_limit(bool);
-
-    float get_lower_angle() const;
-    void set_lower_angle(float);
-
-    float get_upper_angle() const;
-    void set_upper_angle(float);
-
-    bool get_enable_motor() const;
-    void set_enable_motor(bool);
-
-    float get_motor_speed() const;
-    void set_motor_speed(float);
-
-    float get_max_motor_torque() const;
-    void set_max_motor_torque(float);
+    BOX2D_GET_SET_DATA(Vector2, anchor_a);
+    BOX2D_GET_SET_DATA(Vector2, anchor_b);
+    BOX2D_GET_SET(float, reference_angle);
+    BOX2D_GET_SET(bool, enable_limit);
+    BOX2D_GET_SET(float, lower_angle);
+    BOX2D_GET_SET(float, upper_angle);
+    BOX2D_GET_SET(bool, enable_motor);
+    BOX2D_GET_SET(float, motor_speed);
+    BOX2D_GET_SET(float, max_motor_torque);
 
 protected:
     /** Godot bindings */

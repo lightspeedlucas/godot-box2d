@@ -14,7 +14,7 @@ JointB2::JointB2(b2Joint *entity)
 JointB2::~JointB2()
 {
     b2Log("Deleting joint...\n");
-    entity->GetBodyA()->GetWorld()->DestroyJoint(entity);
+    entity->GetBodyB()->GetWorld()->DestroyJoint(entity);
 }
 
 BodyB2 *JointB2::get_body_a() const
@@ -89,20 +89,45 @@ JointB2 *JointB2::get(const b2Joint *o)
     return (JointB2*)o->GetUserData();
 }
 
-JointDefB2::JointDefB2(b2JointDef *def) : def(def) {}
-JointDefB2::~JointDefB2() { delete def; }
-#define DEF (def)
+JointDefB2::JointDefB2(b2JointDef *def)
+    : def(def)
+{
+}
 
-BodyB2 *JointDefB2::get_body_a() const { return BodyB2::get(DEF->bodyA); }
-void JointDefB2::set_body_a(BodyB2 *o) { DEF->bodyA = o ? o->get_b2() : NULL; }
+JointDefB2::~JointDefB2()
+{
+    delete def;
+}
 
-BodyB2 *JointDefB2::get_body_b() const { return BodyB2::get(DEF->bodyB); }
-void JointDefB2::set_body_b(BodyB2 *o) { DEF->bodyB = o ? o->get_b2() : NULL; }
+BodyB2 *JointDefB2::get_body_a() const
+{
+    return BodyB2::get(def->bodyA);
+}
 
-bool JointDefB2::get_collide_connected() const { return DEF->collideConnected; }
-void JointDefB2::set_collide_connected(bool o) { DEF->collideConnected = o; }
+void JointDefB2::set_body_a(BodyB2 *o)
+{
+    def->bodyA = o ? o->get_b2() : NULL;
+}
 
-const b2JointDef *JointDefB2::get_b2() const { return def; }
+BodyB2 *JointDefB2::get_body_b() const
+{
+    return BodyB2::get(def->bodyB);
+}
+
+void JointDefB2::set_body_b(BodyB2 *o)
+{
+    def->bodyB = o ? o->get_b2() : NULL;
+}
+
+bool JointDefB2::get_collide_connected() const
+{
+    return def->collideConnected;
+}
+
+void JointDefB2::set_collide_connected(bool o)
+{
+    def->collideConnected = o;
+}
 
 void JointDefB2::_bind_methods()
 {

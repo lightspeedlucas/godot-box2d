@@ -34,6 +34,10 @@
     private: name##B2(class b2Joint *o) : JointB2(o) {} \
     friend class name##DefB2;
 
+#define BOX2D_GET_SET(type, name) type get_##name() const; void set_##name(type);
+#define BOX2D_GET_SET_DATA(type, name) type get_##name() const; void set_##name(const type &);
+#define BOX2D_IS_SET(name) bool is_##name() const; void set_##name(bool);
+
 /***********************************************************************
  * Enable conversion from Variant to any class derived from Object
  **********************************************************************/

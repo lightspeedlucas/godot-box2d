@@ -18,11 +18,9 @@ public:
     Vector2 get_reaction_force(float inv_dt) const;
     float get_reaction_torque(float inv_dt) const;
 
-    Variant get_metadata() const;
-    void set_metadata(const Variant&);
+    BOX2D_GET_SET_DATA(Variant, metadata);
 
     bool is_active() const;
-
     bool get_collide_connected() const;
 
 protected:
@@ -39,17 +37,9 @@ public:
     ~JointDefB2();
 
     /** Getters/setters */
-    class BodyB2 *get_body_a() const;
-    void set_body_a(class BodyB2*);
-
-    class BodyB2 *get_body_b() const;
-    void set_body_b(class BodyB2*);
-
-    bool get_collide_connected() const;
-    void set_collide_connected(bool);
-
-    /** Box2D accessor */
-    const class b2JointDef *get_b2() const;
+    BOX2D_GET_SET(class BodyB2*, body_a);
+    BOX2D_GET_SET(class BodyB2*, body_b);
+    BOX2D_GET_SET(bool, collide_connected);
 
 protected:
     /** Internal definition */

@@ -332,3 +332,184 @@ BodyB2 *BodyB2::get(const b2Body *o)
 {
     return (BodyB2*)o->GetUserData();
 }
+
+BodyDefB2::BodyDefB2()
+    : def(new b2BodyDef)
+{
+}
+
+BodyDefB2::~BodyDefB2()
+{
+    delete def;
+}
+
+BodyB2 *BodyDefB2::instance(WorldB2 *world)
+{
+    ERR_FAIL_NULL_V(world, NULL);
+    auto *o = world->get_b2()->CreateBody(def);
+
+    auto *body = memnew(BodyB2(o));
+    body->metadata = metadata;
+
+    return body;
+}
+
+int BodyDefB2::get_body_type() const
+{
+    return def->type;
+}
+
+void BodyDefB2::set_body_type(int rhs)
+{
+    def->type = (b2BodyType)rhs;
+}
+
+Vector2 BodyDefB2::get_position() const
+{
+    return GD(def->position);
+}
+
+void BodyDefB2::set_position(const Vector2 &rhs)
+{
+    def->position = B2(rhs);
+}
+
+float BodyDefB2::get_angle() const
+{
+	return def->angle;
+}
+
+void BodyDefB2::set_angle(float rhs)
+{
+	def->angle = rhs;
+}
+
+Vector2 BodyDefB2::get_linear_velocity() const
+{
+    return GD(def->linearVelocity);
+}
+
+void BodyDefB2::set_linear_velocity(const Vector2& rhs)
+{
+    def->linearVelocity = B2(rhs);
+}
+
+float BodyDefB2::get_angular_velocity() const
+{
+	return def->angularVelocity;
+}
+
+void BodyDefB2::set_angular_velocity(float rhs)
+{
+	def->angularVelocity = rhs;
+}
+
+float BodyDefB2::get_linear_damping() const
+{
+	return def->linearDamping;
+}
+
+void BodyDefB2::set_linear_damping(float rhs)
+{
+	def->linearDamping = rhs;
+}
+
+float BodyDefB2::get_angular_damping() const
+{
+	return def->angularDamping;
+}
+
+void BodyDefB2::set_angular_damping(float rhs)
+{
+	def->angularDamping = rhs;
+}
+
+bool BodyDefB2::get_allow_sleep() const
+{
+	return def->allowSleep;
+}
+
+void BodyDefB2::set_allow_sleep(bool rhs)
+{
+	def->allowSleep = rhs;
+}
+
+bool BodyDefB2::get_awake() const
+{
+	return def->awake;
+}
+
+void BodyDefB2::set_awake(bool rhs)
+{
+	def->awake = rhs;
+}
+
+bool BodyDefB2::get_fixed_rotation() const
+{
+	return def->fixedRotation;
+}
+
+void BodyDefB2::set_fixed_rotation(bool rhs)
+{
+	def->fixedRotation = rhs;
+}
+
+bool BodyDefB2::get_bullet() const
+{
+	return def->bullet;
+}
+
+void BodyDefB2::set_bullet(bool rhs)
+{
+	def->bullet = rhs;
+}
+
+bool BodyDefB2::get_active() const
+{
+	return def->active;
+}
+
+void BodyDefB2::set_active(bool rhs)
+{
+	def->active = rhs;
+}
+
+float BodyDefB2::get_gravity_scale() const
+{
+	return def->gravityScale;
+}
+
+void BodyDefB2::set_gravity_scale(float rhs)
+{
+	def->gravityScale = rhs;
+}
+
+Variant BodyDefB2::get_metadata() const
+{
+	return metadata;
+}
+
+void BodyDefB2::set_metadata(const Variant& rhs)
+{
+	metadata = rhs;
+}
+
+void BodyDefB2::_bind_methods()
+{
+    ObjectTypeDB::bind_method(_MD("instance:BodyB2", "world:WorldB2"), &BodyDefB2::instance);
+
+    BOX2D_PROPERTY(BodyDefB2, body_type, Variant::INT, "int");
+    BOX2D_PROPERTY(BodyDefB2, position, Variant::VECTOR2, "Vector2");
+    BOX2D_PROPERTY(BodyDefB2, angle, Variant::REAL, "real");
+    BOX2D_PROPERTY(BodyDefB2, linear_velocity, Variant::VECTOR2, "Vector2");
+    BOX2D_PROPERTY(BodyDefB2, angular_velocity, Variant::REAL, "real");
+    BOX2D_PROPERTY(BodyDefB2, linear_damping, Variant::REAL, "real");
+    BOX2D_PROPERTY(BodyDefB2, angular_damping, Variant::REAL, "real");
+    BOX2D_PROPERTY(BodyDefB2, allow_sleep, Variant::BOOL, "bool");
+    BOX2D_PROPERTY(BodyDefB2, awake, Variant::BOOL, "bool");
+    BOX2D_PROPERTY(BodyDefB2, fixed_rotation, Variant::BOOL, "bool");
+    BOX2D_PROPERTY(BodyDefB2, bullet, Variant::BOOL, "bool");
+    BOX2D_PROPERTY(BodyDefB2, active, Variant::BOOL, "bool");
+    BOX2D_PROPERTY(BodyDefB2, gravity_scale, Variant::REAL, "real");
+    BOX2D_PROPERTY(BodyDefB2, metadata, Variant::NIL, "Variant");
+}

@@ -6,7 +6,7 @@
 class BodyB2 : public Object
 {
     OBJ_TYPE(BodyB2, Object);
-    BOX2D_CLASS(Body, WorldB2);
+    BOX2D_CLASS(Body, BodyDefB2);
 public:
     /** Box2D methods */
     class FixtureB2 *create_fixture(const Ref<class ShapeB2> &shape, float density = 0);
@@ -83,5 +83,45 @@ protected:
     /** Godot bindings */
 	static void _bind_methods();
 };
+
+class BodyDefB2 : public Reference
+{
+    OBJ_TYPE(BodyDefB2, Reference);
+public:
+    /** Lifecycle */
+    BodyDefB2();
+    ~BodyDefB2();
+
+    /** Getters/setters */
+    BOX2D_GET_SET(int, body_type);
+    BOX2D_GET_SET_DATA(Vector2, position);
+    BOX2D_GET_SET(float, angle);
+    BOX2D_GET_SET_DATA(Vector2, linear_velocity);
+    BOX2D_GET_SET(float, angular_velocity);
+    BOX2D_GET_SET(float, linear_damping);
+    BOX2D_GET_SET(float, angular_damping);
+    BOX2D_GET_SET(bool, allow_sleep);
+    BOX2D_GET_SET(bool, awake);
+    BOX2D_GET_SET(bool, fixed_rotation);
+    BOX2D_GET_SET(bool, bullet);
+    BOX2D_GET_SET(bool, active);
+    BOX2D_GET_SET(float, gravity_scale);
+    BOX2D_GET_SET_DATA(Variant, metadata);
+
+    /** Create body */
+    class BodyB2 *instance(class WorldB2*);
+
+protected:
+    /** Internal definition */
+    class b2BodyDef *def;
+    Variant metadata;
+
+protected:
+    /** Godot bindings */
+	static void _bind_methods();
+};
+
+// BOX2D_GET_SET\(([^,]+), (\w+)\);
+// $1 BodyDefB2::get_$2() const\n{\n\treturn def->$2;\n}\n\nvoid BodyDefB2::set_$2($1 rhs)\n{\n\tdef->$2 = rhs;\n}\n
 
 #endif

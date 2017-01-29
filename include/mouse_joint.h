@@ -9,17 +9,10 @@ class MouseJointB2 : public JointB2
     BOX2D_JOINT(MouseJoint);
 public:
     /** Box2D methods */
-    Vector2 get_target() const;
-    void set_target(const Vector2&);
-
-    float get_max_force() const;
-    void set_max_force(float);
-
-    float get_frequency() const;
-    void set_frequency(float);
-
-    float get_damping() const;
-    void set_damping(float);
+    BOX2D_GET_SET_DATA(Vector2, target);
+    BOX2D_GET_SET(float, max_force);
+    BOX2D_GET_SET(float, frequency);
+    BOX2D_GET_SET(float, damping);
 
 protected:
     /** Godot bindings */
@@ -35,17 +28,10 @@ public:
     class JointB2 *instance(class WorldB2*);
 
     /** Getters/setters */
-    Vector2 get_target() const;
-    void set_target(const Vector2&);
-
-    float get_max_force() const;
-    void set_max_force(float);
-
-    float get_frequency() const;
-    void set_frequency(float);
-
-    float get_damping() const;
-    void set_damping(float);
+    BOX2D_GET_SET_DATA(Vector2, target);
+    BOX2D_GET_SET(float, max_force);
+    BOX2D_GET_SET(float, frequency);
+    BOX2D_GET_SET(float, damping);
 
 protected:
     /** Godot bindings */

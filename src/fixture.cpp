@@ -183,24 +183,128 @@ FixtureB2 *FixtureB2::get(const b2Fixture *o)
     return (FixtureB2*)o->GetUserData();
 }
 
-// FilterB2::FilterB2() : filter(new b2Filter) {}
-// FilterB2::FilterB2(const b2Filter &filter) : filter(new b2Filter(filter)) {}
-// FilterB2::~FilterB2() { delete filter; }
+FixtureDefB2::FixtureDefB2()
+    : def(new b2FixtureDef)
+{
+}
 
-// int FilterB2::get_category() const { return filter->categoryBits; }
-// void FilterB2::set_category(int o) { filter->categoryBits = (uint16)o; }
+FixtureDefB2::~FixtureDefB2()
+{
+    delete def;
+}
 
-// int FilterB2::get_mask() const { return filter->maskBits; }
-// void FilterB2::set_mask(int o) { filter->maskBits = (uint16)o; }
+FixtureB2 *FixtureDefB2::instance(BodyB2 *body)
+{
+    ERR_FAIL_NULL_V(body, NULL);
+    auto *o = body->get_b2()->CreateFixture(def);
 
-// int FilterB2::get_group() const { return filter->groupIndex; }
-// void FilterB2::set_group(int o) { filter->groupIndex = (int16)o; }
+    auto *fixture = memnew(FixtureB2(o));
+    fixture->set_metadata(metadata);
 
-// b2Filter FilterB2::get_b2() const { return *filter; }
+    return fixture;
+}
 
-// void FilterB2::_bind_methods()
-// {
-//     BOX2D_PROPERTY(FilterB2, category, Variant::INT, "int");
-//     BOX2D_PROPERTY(FilterB2, mask, Variant::INT, "int");
-//     BOX2D_PROPERTY(FilterB2, group, Variant::INT, "int");
-// }
+Ref<ShapeB2> FixtureDefB2::get_shape() const
+{
+	return shape;
+}
+
+void FixtureDefB2::set_shape(const Ref<ShapeB2> &rhs)
+{
+    def->shape = rhs.is_null() ? NULL : rhs->get_b2();
+	shape = rhs;
+}
+
+float FixtureDefB2::get_friction() const
+{
+	return def->friction;
+}
+
+void FixtureDefB2::set_friction(float rhs)
+{
+	def->friction = rhs;
+}
+
+float FixtureDefB2::get_restitution() const
+{
+	return def->restitution;
+}
+
+void FixtureDefB2::set_restitution(float rhs)
+{
+	def->restitution = rhs;
+}
+
+float FixtureDefB2::get_density() const
+{
+	return def->density;
+}
+
+void FixtureDefB2::set_density(float rhs)
+{
+	def->density = rhs;
+}
+
+bool FixtureDefB2::get_sensor() const
+{
+	return def->isSensor;
+}
+
+void FixtureDefB2::set_sensor(bool rhs)
+{
+	def->isSensor = rhs;
+}
+
+int FixtureDefB2::get_filter_category() const
+{
+	return def->filter.categoryBits;
+}
+
+void FixtureDefB2::set_filter_category(int rhs)
+{
+    def->filter.categoryBits = (uint16)rhs;
+}
+
+int FixtureDefB2::get_filter_mask() const
+{
+	return def->filter.maskBits;
+}
+
+void FixtureDefB2::set_filter_mask(int rhs)
+{
+    def->filter.maskBits = (uint16)rhs;
+}
+
+int FixtureDefB2::get_filter_group() const
+{
+	return def->filter.groupIndex;
+}
+
+void FixtureDefB2::set_filter_group(int rhs)
+{
+    def->filter.groupIndex = (int16)rhs;
+}
+
+Variant FixtureDefB2::get_metadata() const
+{
+	return metadata;
+}
+
+void FixtureDefB2::set_metadata(const Variant& rhs)
+{
+	metadata = rhs;
+}
+
+void FixtureDefB2::_bind_methods()
+{
+    ObjectTypeDB::bind_method(_MD("instance:FixtureB2", "body:BodyB2"), &FixtureDefB2::instance);
+
+    BOX2D_PROPERTY(FixtureDefB2, shape, Variant::OBJECT, "ShapeB2");
+    BOX2D_PROPERTY(FixtureDefB2, friction, Variant::REAL, "real");
+    BOX2D_PROPERTY(FixtureDefB2, restitution, Variant::REAL, "real");
+    BOX2D_PROPERTY(FixtureDefB2, density, Variant::REAL, "real");
+    BOX2D_PROPERTY(FixtureDefB2, sensor, Variant::BOOL, "bool");
+    BOX2D_PROPERTY(FixtureDefB2, filter_category, Variant::INT, "int");
+    BOX2D_PROPERTY(FixtureDefB2, filter_mask, Variant::INT, "int");
+    BOX2D_PROPERTY(FixtureDefB2, filter_group, Variant::INT, "int");
+}

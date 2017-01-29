@@ -6,12 +6,9 @@
 class BodyB2 : public Object
 {
     OBJ_TYPE(BodyB2, Object);
-    BOX2D_CLASS(Body, BodyDefB2);
+    BOX2D_CLASS(Body);
 public:
     /** Box2D methods */
-    class FixtureB2 *create_fixture(const Ref<class ShapeB2> &shape, float density = 0);
-    void destroy_fixture(class FixtureB2*);
-
     void set_transform(const Vector2 &position, float angle);
     Vector2 get_position() const;
     float get_angle() const;
@@ -122,6 +119,6 @@ protected:
 };
 
 // BOX2D_GET_SET\(([^,]+), (\w+)\);
-// $1 BodyDefB2::get_$2() const\n{\n\treturn def->$2;\n}\n\nvoid BodyDefB2::set_$2($1 rhs)\n{\n\tdef->$2 = rhs;\n}\n
+// $1 FixtureDefB2::get_$2() const\n{\n\treturn def->$2;\n}\n\nvoid FixtureDefB2::set_$2($1 rhs)\n{\n\tdef->$2 = rhs;\n}\n
 
 #endif

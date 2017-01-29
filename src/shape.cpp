@@ -14,6 +14,16 @@ ShapeB2::~ShapeB2()
     memdelete(entity);
 }
 
+bool ShapeB2::test_point(const Matrix32 &xf, const Vector2 &point)
+{
+    return entity->TestPoint(B2(xf), B2(point));
+}
+
+void ShapeB2::_bind_methods()
+{
+    ObjectTypeDB::bind_method(_MD("test_point:bool", "transform:Matrix32", "point:Vector2"), &ShapeB2::test_point);
+}
+
 const b2Shape *ShapeB2::get_b2() const
 {
     return entity;

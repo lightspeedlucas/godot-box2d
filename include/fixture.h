@@ -6,7 +6,7 @@
 class FixtureB2 : public Object
 {
     OBJ_TYPE(FixtureB2, Object);
-    BOX2D_CLASS(Fixture, BodyB2);
+    BOX2D_CLASS(Fixture);
 public:
     /** Box2D methods */
     bool is_sensor() const;
@@ -49,35 +49,37 @@ protected:
 	static void _bind_methods();
 };
 
-// class FilterB2 : public Reference
-// {
-//     OBJ_TYPE(FilterB2, Reference);
-// public:
-//     /** Lifecycle */
-//     FilterB2();
-//     FilterB2(const struct b2Filter&);
-//     ~FilterB2();
+class FixtureDefB2 : public Reference
+{
+    OBJ_TYPE(FixtureDefB2, Reference);
+public:
+    /** Lifecycle */
+    FixtureDefB2();
+    ~FixtureDefB2();
 
-//     /** Getters/setters */
-//     int get_category() const;
-//     void set_category(int);
+    /** Getters/setters */
+    BOX2D_GET_SET_DATA(Ref<class ShapeB2>, shape);
+    BOX2D_GET_SET(float, friction);
+    BOX2D_GET_SET(float, restitution);
+    BOX2D_GET_SET(float, density);
+    BOX2D_GET_SET(bool, sensor);
+    BOX2D_GET_SET(int, filter_category);
+    BOX2D_GET_SET(int, filter_mask);
+    BOX2D_GET_SET(int, filter_group);
+    BOX2D_GET_SET_DATA(Variant, metadata);
 
-//     int get_mask() const;
-//     void set_mask(int);
+    /** Create fixture */
+    class FixtureB2 *instance(class BodyB2*);
 
-//     int get_group() const;
-//     void set_group(int);
+protected:
+    /** Internal definition */
+    class b2FixtureDef *def;
+    Ref<class ShapeB2> shape;
+    Variant metadata;
 
-//     /** Box2D accessor */
-//     struct b2Filter get_b2() const;
-
-// private:
-//     /** Internal definition */
-//     struct b2Filter *filter;
-
-// protected:
-//     /** Godot bindings */
-// 	static void _bind_methods();
-// };
+protected:
+    /** Godot bindings */
+	static void _bind_methods();
+};
 
 #endif

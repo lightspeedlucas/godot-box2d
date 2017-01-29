@@ -6,7 +6,7 @@
 class JointB2 : public Object
 {
     OBJ_TYPE(JointB2, Object);
-    BOX2D_CLASS(Joint, JointDefB2);
+    BOX2D_CLASS(Joint);
 public:
     /** Box2D methods */
     class BodyB2 *get_body_a() const;

@@ -6,7 +6,7 @@
 class WorldB2 : public Object
 {
     OBJ_TYPE(WorldB2, Object);
-    BOX2D_CLASS(World, Box2D);
+    BOX2D_CLASS(World);
 public:
     /** Box2D methods */
     void step(float timeStep, int velocityIterations, int positionIterations);

@@ -8,10 +8,9 @@
  * Helpers macros
  **********************************************************************/
 
-#define BOX2D_CLASS(name, parent) \
+#define BOX2D_CLASS(name) \
     protected: class b2##name *entity; Variant metadata; \
-    name##B2(class b2##name *); friend class parent; \
-    public: ~name##B2(); \
+    public: name##B2(class b2##name *); ~name##B2(); \
     class b2##name *get_b2() const { return entity; } \
     static name##B2 *get(const b2##name *);
 
@@ -62,6 +61,9 @@ struct Vector2 GD(const struct b2Vec2&);
 struct b2AABB B2(const struct Rect2&);
 struct Rect2 GD(const struct b2AABB&);
 
+struct b2Transform B2(const struct Matrix32&);
+struct Matrix32 GD(const struct b2Transform&);
+
 /***********************************************************************
  * Include entities
  **********************************************************************/
@@ -91,6 +93,8 @@ public:
 
     /** Box2D methods */
     WorldB2 *world(const Vector2 &gravity);
+    BodyB2 *body(WorldB2 *world, int type, const Matrix32 &xf = Matrix32());
+    FixtureB2 *fixture(BodyB2 *body, const ShapeB2 *shape, float density);
 
     Ref<ShapeB2> circle(const Vector2 &offset, float radius);
     Ref<ShapeB2> box(const Vector2 &extents, const Vector2 &offset = Vector2(), float angle = 0);

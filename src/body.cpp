@@ -25,19 +25,6 @@ BodyB2::~BodyB2()
     entity->GetWorld()->DestroyBody(entity);
 }
 
-FixtureB2 *BodyB2::create_fixture(const Ref<ShapeB2> &shape, float density)
-{
-    ERR_FAIL_COND_V(shape.is_null(), NULL);
-    auto *fixture = entity->CreateFixture(shape->get_b2(), density);
-    return memnew(FixtureB2(fixture));
-}
-
-void BodyB2::destroy_fixture(FixtureB2 *fixture)
-{
-    ERR_FAIL_NULL(fixture);
-    memdelete(fixture);
-}
-
 void BodyB2::set_transform(const Vector2 &position, float angle)
 {
     entity->SetTransform(B2(position), angle);
@@ -274,9 +261,6 @@ WorldB2 *BodyB2::get_world() const
 
 void BodyB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("create_fixture:FixtureB2", "shape:ShapeB2", "density:real"), &BodyB2::create_fixture, DEFVAL(1.f));
-    ObjectTypeDB::bind_method(_MD("destroy_fixture", "fixture:FixtureB2"), &BodyB2::destroy_fixture);
-
     ObjectTypeDB::bind_method(_MD("set_transform", "position:Vector2", "angle:real"), &BodyB2::set_transform);
     ObjectTypeDB::bind_method(_MD("get_position:Vector2"), &BodyB2::get_position);
     ObjectTypeDB::bind_method(_MD("get_angle:real"), &BodyB2::get_angle);
@@ -349,7 +333,7 @@ BodyB2 *BodyDefB2::instance(WorldB2 *world)
     auto *o = world->get_b2()->CreateBody(def);
 
     auto *body = memnew(BodyB2(o));
-    body->metadata = metadata;
+    body->set_metadata(metadata);
 
     return body;
 }

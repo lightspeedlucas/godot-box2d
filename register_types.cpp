@@ -15,10 +15,14 @@ void register_box2d_types()
     ObjectTypeDB::register_virtual_type<BodyB2>();
     ObjectTypeDB::register_virtual_type<FixtureB2>();
     ObjectTypeDB::register_virtual_type<ShapeB2>();
+
     ObjectTypeDB::register_virtual_type<JointB2>();
+    ObjectTypeDB::register_virtual_type<RevoluteJointB2>();
+    ObjectTypeDB::register_virtual_type<MouseJointB2>();
 
     ObjectTypeDB::register_virtual_type<JointDefB2>();
     ObjectTypeDB::register_type<RevoluteJointDefB2>();
+    ObjectTypeDB::register_type<MouseJointDefB2>();
 
     Globals::get_singleton()->add_singleton(Globals::Singleton("Box2D", memnew(Box2D)));
 }

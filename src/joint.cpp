@@ -7,18 +7,81 @@
 JointB2::JointB2(b2Joint *entity)
     : entity(entity)
 {
+    b2Log("Created joint...\n");
     entity->SetUserData(this);
-    b2Log("Created joint...");
 }
 
 JointB2::~JointB2()
 {
-    b2Log("Deleting joint...");
+    b2Log("Deleting joint...\n");
     entity->GetBodyA()->GetWorld()->DestroyJoint(entity);
+}
+
+BodyB2 *JointB2::get_body_a() const
+{
+    return BodyB2::get(entity->GetBodyA());
+}
+
+BodyB2 *JointB2::get_body_b() const
+{
+    return BodyB2::get(entity->GetBodyB());
+}
+
+Vector2 JointB2::get_anchor_a() const
+{
+    return GD(entity->GetAnchorA());
+}
+
+Vector2 JointB2::get_anchor_b() const
+{
+    return GD(entity->GetAnchorB());
+}
+
+Vector2 JointB2::get_reaction_force(float inv_dt) const
+{
+    return GD(entity->GetReactionForce(inv_dt));
+}
+
+float JointB2::get_reaction_torque(float inv_dt) const
+{
+    return entity->GetReactionTorque(inv_dt);
+}
+
+Variant JointB2::get_metadata() const
+{
+    return metadata;
+}
+
+void JointB2::set_metadata(const Variant &rhs)
+{
+    metadata = rhs;
+}
+
+bool JointB2::is_active() const
+{
+    return entity->IsActive();
+}
+
+bool JointB2::get_collide_connected() const
+{
+    return entity->GetCollideConnected();
 }
 
 void JointB2::_bind_methods()
 {
+    ObjectTypeDB::bind_method(_MD("get_body_a:BodyB2"), &JointB2::get_body_a);
+    ObjectTypeDB::bind_method(_MD("get_body_b:BodyB2"), &JointB2::get_body_b);
+
+    ObjectTypeDB::bind_method(_MD("get_anchor_a:Vector2"), &JointB2::get_anchor_a);
+    ObjectTypeDB::bind_method(_MD("get_anchor_b:Vector2"), &JointB2::get_anchor_b);
+
+    ObjectTypeDB::bind_method(_MD("get_reaction_force:Vector2", "inv_dt:real"), &JointB2::get_reaction_force);
+    ObjectTypeDB::bind_method(_MD("get_reaction_torque:real", "inv_dt:real"), &JointB2::get_reaction_torque);
+
+    BOX2D_PROPERTY(JointB2, metadata, Variant::NIL, "Variant");
+
+    ObjectTypeDB::bind_method(_MD("is_active:bool"), &JointB2::is_active);
+    ObjectTypeDB::bind_method(_MD("get_collide_connected:bool"), &JointB2::get_collide_connected);
 }
 
 JointB2 *JointB2::get(const b2Joint *o)
@@ -43,51 +106,9 @@ const b2JointDef *JointDefB2::get_b2() const { return def; }
 
 void JointDefB2::_bind_methods()
 {
+    ObjectTypeDB::bind_method(_MD("instance:JointB2", "world:WorldB2"), &JointDefB2::instance);
+
     BOX2D_PROPERTY(JointDefB2, body_a, Variant::OBJECT, "BodyB2");
     BOX2D_PROPERTY(JointDefB2, body_b, Variant::OBJECT, "BodyB2");
     BOX2D_PROPERTY(JointDefB2, collide_connected, Variant::BOOL, "bool");
-}
-
-#undef DEF
-RevoluteJointDefB2::RevoluteJointDefB2() : JointDefB2(new b2RevoluteJointDef) {}
-#define DEF ((b2RevoluteJointDef*)def)
-
-Vector2 RevoluteJointDefB2::get_anchor_a() const { return GD(DEF->localAnchorA); }
-void RevoluteJointDefB2::set_anchor_a(const Vector2 &o) { DEF->localAnchorA = B2(o); }
-
-Vector2 RevoluteJointDefB2::get_anchor_b() const { return GD(DEF->localAnchorB); }
-void RevoluteJointDefB2::set_anchor_b(const Vector2 &o) { DEF->localAnchorB = B2(o); }
-
-float RevoluteJointDefB2::get_reference_angle() const { return DEF->referenceAngle; }
-void RevoluteJointDefB2::set_reference_angle(float o) { DEF->referenceAngle = o; }
-
-bool RevoluteJointDefB2::get_enable_limit() const { return DEF->enableLimit; }
-void RevoluteJointDefB2::set_enable_limit(bool o) { DEF->enableLimit = o; }
-
-float RevoluteJointDefB2::get_lower_angle() const { return DEF->lowerAngle; }
-void RevoluteJointDefB2::set_lower_angle(float o) { DEF->lowerAngle = o; }
-
-float RevoluteJointDefB2::get_upper_angle() const { return DEF->upperAngle; }
-void RevoluteJointDefB2::set_upper_angle(float o) { DEF->upperAngle = o; }
-
-bool RevoluteJointDefB2::get_enable_motor() const { return DEF->enableMotor; }
-void RevoluteJointDefB2::set_enable_motor(bool o) { DEF->enableMotor = o; }
-
-float RevoluteJointDefB2::get_motor_speed() const { return DEF->motorSpeed; }
-void RevoluteJointDefB2::set_motor_speed(float o) { DEF->motorSpeed = o; }
-
-float RevoluteJointDefB2::get_max_motor_torque() const { return DEF->maxMotorTorque; }
-void RevoluteJointDefB2::set_max_motor_torque(float o) { DEF->maxMotorTorque = o; }
-
-void RevoluteJointDefB2::_bind_methods()
-{
-    BOX2D_PROPERTY(RevoluteJointDefB2, anchor_a, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(RevoluteJointDefB2, anchor_b, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(RevoluteJointDefB2, reference_angle, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointDefB2, enable_limit, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(RevoluteJointDefB2, lower_angle, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointDefB2, upper_angle, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointDefB2, enable_motor, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(RevoluteJointDefB2, motor_speed, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointDefB2, max_motor_torque, Variant::REAL, "real");
 }

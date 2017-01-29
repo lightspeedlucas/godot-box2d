@@ -35,18 +35,18 @@ void WorldB2::destroy_body(BodyB2 *body)
     memdelete(body);
 }
 
-JointB2 *WorldB2::create_joint(const JointDefB2 *def)
-{
-    ERR_FAIL_NULL_V(def, NULL);
-    auto *joint = entity->CreateJoint(def->get_b2());
-    return memnew(JointB2(joint));
-}
+// JointB2 *WorldB2::create_joint(const JointDefB2 *def)
+// {
+//     ERR_FAIL_NULL_V(def, NULL);
+//     auto *joint = entity->CreateJoint(def->get_b2());
+//     return memnew(JointB2(joint));
+// }
 
-void WorldB2::destroy_joint(JointB2 *joint)
-{
-    ERR_FAIL_NULL(joint);
-    memdelete(joint);
-}
+// void WorldB2::destroy_joint(JointB2 *joint)
+// {
+//     ERR_FAIL_NULL(joint);
+//     memdelete(joint);
+// }
 
 void WorldB2::step(float timeStep, int velocityIterations, int positionIterations)
 {
@@ -154,8 +154,8 @@ void WorldB2::_bind_methods()
     ObjectTypeDB::bind_method(_MD("create_body:BodyB2", "type:int", "position:Vector2", "angle:real"), &WorldB2::create_body, DEFVAL(Vector2()), DEFVAL(.0f));
     ObjectTypeDB::bind_method(_MD("destroy_body"), &WorldB2::destroy_body);
 
-    ObjectTypeDB::bind_method(_MD("create_joint:BodyB2", "def:JointDefB2"), &WorldB2::create_joint);
-    ObjectTypeDB::bind_method(_MD("destroy_joint"), &WorldB2::destroy_joint);
+    //ObjectTypeDB::bind_method(_MD("create_joint:BodyB2", "def:JointDefB2"), &WorldB2::create_joint);
+    //ObjectTypeDB::bind_method(_MD("destroy_joint"), &WorldB2::destroy_joint);
 
     ObjectTypeDB::bind_method(_MD("step", "timeStep:real", "velocityIterations:int", "positionIterations:int"), &WorldB2::step);
 

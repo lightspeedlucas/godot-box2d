@@ -9,7 +9,7 @@
  **********************************************************************/
 
 #define BOX2D_CLASS(name, parent) \
-    private: class b2##name *entity; Variant metadata; \
+    protected: class b2##name *entity; Variant metadata; \
     name##B2(class b2##name *); friend class parent; \
     public: ~name##B2(); \
     class b2##name *get_b2() const { return entity; } \
@@ -30,34 +30,9 @@
     ObjectTypeDB::bind_method(_MD("set_" #name, "value:bool"), &cls::set_##name); \
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, #name), _SCS("set_" #name), _SCS("is_" #name));
 
-#define WRAP_BOX2D(type) private: type *wrapped; \
-    public: inline type##Wrapper(type *o) : wrapped(o) {} \
-    operator type*() const { return wrapped; } \
-    type *operator->() { return wrapped; } \
-    inline static Ref<type##Wrapper> wrap(type *o) { return o ? memnew(type##Wrapper(o)) : NULL; }
-
-#define WRAP_BOX2D_DEF(type) private: type wrapped; \
-    public: inline type##inition() {} \
-    inline type##inition(const type &src) : wrapped(src) {} \
-    operator const type*() const { return &wrapped; }
-
-#define BOX2D_DEF_FIELD(type, gdname, b2name) \
-    inline void set_##gdname(type v) { wrapped.##b2name = (decltype(wrapped.##b2name))v; } \
-    inline type get_##gdname() const { return (type)wrapped.##b2name; }
-
-#define BOX2D_DEF_FIELD_COMPLEX(type, gdname, b2name) \
-    inline void set_##gdname(const type &v) { wrapped.##b2name = B2(v); } \
-    inline type get_##gdname() const { return GD(wrapped.##b2name); }
-
-#define BOX2D_BIND_PROPERTY(cls, name, type) \
-    ObjectTypeDB::bind_method(_MD("get_" #name ":" #type), &cls::get_##name); \
-    ObjectTypeDB::bind_method(_MD("set_" #name, "value:" #type), &cls::set_##name); \
-    ADD_PROPERTY(PropertyInfo(Variant::type, #name), _SCS("set_" #name), _SCS("get_" #name));
-
-#define BOX2D_GD(type) static inline Ref<type##Wrapper> GD(type *o) { return type##Wrapper::wrap(o); }
-
-#define BOX2D_DECL(type) class type##Wrapper; class type##Definition; \
-    typedef Ref<type##Wrapper> type##Ref;
+#define BOX2D_JOINT(name) \
+    private: name##B2(class b2Joint *o) : JointB2(o) {} \
+    friend class name##DefB2;
 
 /***********************************************************************
  * Enable conversion from Variant to any class derived from Object
@@ -91,7 +66,10 @@ struct Rect2 GD(const struct b2AABB&);
 #include "body.h"
 #include "fixture.h"
 #include "shape.h"
+
 #include "joint.h"
+#include "revolute_joint.h"
+#include "mouse_joint.h"
 
 /***********************************************************************
  * Type Factory
@@ -111,6 +89,10 @@ public:
     WorldB2 *world(const Vector2 &gravity);
 
     Ref<ShapeB2> circle(const Vector2 &offset, float radius);
+    Ref<ShapeB2> box(const Vector2 &extents, const Vector2 &offset = Vector2(), float angle = 0);
+    Ref<ShapeB2> poly(const Vector2Array &vertices);
+    Ref<ShapeB2> edge(const Vector2 &a, const Vector2 &b);
+    Ref<ShapeB2> chain(const Vector2Array &vertices, bool loop = false);
 
 protected:
     /** Godot bindings */

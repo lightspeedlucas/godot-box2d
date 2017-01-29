@@ -48,14 +48,14 @@ Ref<ShapeB2> Box2D::circle(const Vector2 &offset, float radius)
     auto o = new b2CircleShape;
     o->m_p = B2(offset);
     o->m_radius = radius;
-    return memnew(ShapeB2(o));
+    return memnew(ShapeB2(o, true));
 }
 
 Ref<ShapeB2> Box2D::box(const Vector2 &extents, const Vector2 &offset, float angle)
 {
     auto o = new b2PolygonShape;
     o->SetAsBox(extents.x, extents.y, B2(offset), angle);
-    return memnew(ShapeB2(o));
+    return memnew(ShapeB2(o, true));
 }
 
 Ref<ShapeB2> Box2D::poly(const Vector2Array &vertices)
@@ -63,14 +63,14 @@ Ref<ShapeB2> Box2D::poly(const Vector2Array &vertices)
     auto r = vertices.read();
     auto o = new b2PolygonShape;
     o->Set((b2Vec2*)r.ptr(), vertices.size());
-    return memnew(ShapeB2(o));
+    return memnew(ShapeB2(o, true));
 }
 
 Ref<ShapeB2> Box2D::edge(const Vector2 &a, const Vector2 &b)
 {
     auto o = new b2EdgeShape;
     o->Set(B2(a), B2(b));
-    return memnew(ShapeB2(o));
+    return memnew(ShapeB2(o, true));
 }
 
 Ref<ShapeB2> Box2D::chain(const Vector2Array &vertices, bool loop)
@@ -81,7 +81,29 @@ Ref<ShapeB2> Box2D::chain(const Vector2Array &vertices, bool loop)
         o->CreateLoop((b2Vec2*)r.ptr(), vertices.size());
     else
         o->CreateChain((b2Vec2*)r.ptr(), vertices.size());
-    return memnew(ShapeB2(o));
+    return memnew(ShapeB2(o, true));
+}
+
+bool Box2D::overlap_fixtures(FixtureB2 *a, FixtureB2 *b)
+{
+    ERR_FAIL_NULL_V(a, false);
+    ERR_FAIL_NULL_V(b, false);
+
+    b2Fixture *fa = a->get_b2();
+    b2Fixture *fb = b->get_b2();
+
+    b2Body *ba = fa->GetBody();
+    b2Body *bb = fb->GetBody();
+
+    return b2TestOverlap(fa->GetShape(), 0, fb->GetShape(), 0, ba->GetTransform(), bb->GetTransform());
+}
+
+bool Box2D::overlap_shapes(ShapeB2 *a, ShapeB2 *b, const Matrix32 &xf_a, const Matrix32 &xf_b)
+{
+    ERR_FAIL_NULL_V(a, false);
+    ERR_FAIL_NULL_V(b, false);
+
+    return b2TestOverlap(a->get_b2(), 0, b->get_b2(), 0, B2(xf_a), B2(xf_b));
 }
 
 void Box2D::_bind_methods()
@@ -94,7 +116,10 @@ void Box2D::_bind_methods()
     ObjectTypeDB::bind_method(_MD("box:ShapeB2", "extents:Vector2", "offset:Vector2", "angle:real"), &Box2D::box, DEFVAL(Vector2()), DEFVAL(.0f));
     ObjectTypeDB::bind_method(_MD("poly:ShapeB2", "vertices:Vector2Array"), &Box2D::poly);
     ObjectTypeDB::bind_method(_MD("edge:ShapeB2", "a:Vector2", "b:Vector2"), &Box2D::edge);
-    ObjectTypeDB::bind_method(_MD("chain:ShapeB2", "vertices:Vector2Array", "loop:bool"), &Box2D::poly, DEFVAL(false));
+    ObjectTypeDB::bind_method(_MD("chain:ShapeB2", "vertices:Vector2Array", "loop:bool"), &Box2D::chain, DEFVAL(false));
+
+    ObjectTypeDB::bind_method(_MD("overlap_fixtures:bool", "a:FixtureB2", "b:FixtureB2"), &Box2D::overlap_fixtures);
+    ObjectTypeDB::bind_method(_MD("overlap_shapes:bool", "a:ShapeB2", "b:ShapeB2", "xf_a:Matrix32", "xf_b:Matrix32"), &Box2D::overlap_shapes);
 }
 
 b2Vec2 B2(const Vector2 &v) { return b2Vec2(v.x, v.y); }
@@ -105,10 +130,11 @@ Rect2 GD(const b2AABB &v) { return Rect2(GD(v.lowerBound), GD(v.upperBound - v.l
 
 b2Transform B2(const Matrix32 &v)
 {
+    Vector2 rot = v.elements[1].normalized();
     b2Transform xf;
     xf.p = { v.elements[2].x, v.elements[2].y };
-    xf.q.s = v.elements[1].x;
-    xf.q.c = v.elements[1].y;
+    xf.q.s = rot.x;
+    xf.q.c = rot.y;
     return xf;
 }
 

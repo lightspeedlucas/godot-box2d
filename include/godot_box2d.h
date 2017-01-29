@@ -72,6 +72,7 @@ struct Matrix32 GD(const struct b2Transform&);
 #include "body.h"
 #include "fixture.h"
 #include "shape.h"
+#include "contact.h"
 
 #include "joint.h"
 #include "revolute_joint.h"
@@ -91,7 +92,7 @@ public:
     /** Singleton */
     static Box2D *get() { return singleton; }
 
-    /** Box2D methods */
+    /** Creation methods */
     WorldB2 *world(const Vector2 &gravity);
     BodyB2 *body(WorldB2 *world, int type, const Matrix32 &xf = Matrix32());
     FixtureB2 *fixture(BodyB2 *body, const ShapeB2 *shape, float density);
@@ -101,6 +102,10 @@ public:
     Ref<ShapeB2> poly(const Vector2Array &vertices);
     Ref<ShapeB2> edge(const Vector2 &a, const Vector2 &b);
     Ref<ShapeB2> chain(const Vector2Array &vertices, bool loop = false);
+
+    /** Query methods */
+    bool overlap_fixtures(FixtureB2 *a, FixtureB2 *b);
+    bool overlap_shapes(ShapeB2 *a, ShapeB2 *b, const Matrix32 &xf_a, const Matrix32 &xf_b);
 
 protected:
     /** Godot bindings */

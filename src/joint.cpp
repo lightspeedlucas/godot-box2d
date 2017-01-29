@@ -7,13 +7,11 @@
 JointB2::JointB2(b2Joint *entity)
     : entity(entity)
 {
-    b2Log("Created joint...\n");
     entity->SetUserData(this);
 }
 
 JointB2::~JointB2()
 {
-    b2Log("Deleting joint...\n");
     entity->GetBodyB()->GetWorld()->DestroyJoint(entity);
 }
 

@@ -9,6 +9,8 @@ class FixtureB2 : public Object
     BOX2D_CLASS(Fixture);
 public:
     /** Box2D methods */
+    Ref<class ShapeB2> get_shape() const;
+
     bool is_sensor() const;
     void set_sensor(bool);
 

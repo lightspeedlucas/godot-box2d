@@ -8,13 +8,16 @@ FixtureB2::FixtureB2(b2Fixture *entity)
     : entity(entity)
 {
     entity->SetUserData(this);
-    b2Log("Created fixture...\n");
 }
 
 FixtureB2::~FixtureB2()
 {
-    b2Log("Deleting fixture...\n");
     entity->GetBody()->DestroyFixture(entity);
+}
+
+Ref<ShapeB2> FixtureB2::get_shape() const
+{
+    return memnew(ShapeB2(entity->GetShape(), false));
 }
 
 bool FixtureB2::is_sensor() const
@@ -152,6 +155,8 @@ Rect2 FixtureB2::get_aabb(int child) const
 
 void FixtureB2::_bind_methods()
 {
+    ObjectTypeDB::bind_method(_MD("get_shape:ShapeB2"), &FixtureB2::get_shape);
+
     ObjectTypeDB::bind_method(_MD("is_sensor:bool"), &FixtureB2::is_sensor);
     ObjectTypeDB::bind_method(_MD("set_sensor", "enabled:bool"), &FixtureB2::set_sensor);
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "sensor"), _SCS("set_sensor"), _SCS("is_sensor"));

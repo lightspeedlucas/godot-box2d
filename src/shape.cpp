@@ -4,14 +4,14 @@
 
 #include <Box2D/Box2D.h>
 
-ShapeB2::ShapeB2(b2Shape *entity)
-    : entity(entity)
+ShapeB2::ShapeB2(b2Shape *entity, bool exclusive)
+    : entity(entity), exclusive(exclusive)
 {
 }
 
 ShapeB2::~ShapeB2()
 {
-    memdelete(entity);
+    if (exclusive) memdelete(entity);
 }
 
 bool ShapeB2::test_point(const Matrix32 &xf, const Vector2 &point)

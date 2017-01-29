@@ -8,7 +8,6 @@ BodyB2::BodyB2(b2Body *entity)
     : entity(entity)
 {
     entity->SetUserData(this);
-    b2Log("Created body...\n");
 }
 
 BodyB2::~BodyB2()
@@ -21,7 +20,6 @@ BodyB2::~BodyB2()
     while (auto *o = entity->GetFixtureList())
         memdelete_notnull(FixtureB2::get(o));
 
-    b2Log("Deleting body...\n");
     entity->GetWorld()->DestroyBody(entity);
 }
 

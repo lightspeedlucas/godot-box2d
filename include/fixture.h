@@ -75,7 +75,7 @@ public:
 
 protected:
     /** Internal definition */
-    class b2FixtureDef *def;
+    struct b2FixtureDef *def;
     Ref<class ShapeB2> shape;
     Variant metadata;
 

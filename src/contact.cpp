@@ -15,6 +15,7 @@ ContactB2::~ContactB2()
 
 Dictionary ContactB2::get_world_manifold() const
 {
+    return Dictionary();
 }
 
 bool ContactB2::is_touching() const

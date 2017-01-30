@@ -43,8 +43,8 @@ public:
 
 protected:
     /** Internal definition */
-    JointDefB2(class b2JointDef*);
-    class b2JointDef *def;
+    JointDefB2(struct b2JointDef*);
+    struct b2JointDef *def;
 
 protected:
     /** Godot bindings */

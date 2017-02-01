@@ -9,9 +9,16 @@ class BodyB2 : public Object
     BOX2D_CLASS(Body);
 public:
     /** Box2D methods */
-    void set_transform(const Vector2 &position, float angle);
+    Matrix32 get_transform() const;
+    void set_transform(const Matrix32&);
+    
+    void set_position_and_angle(const Vector2 &position, float angle);
+
     Vector2 get_position() const;
+    void set_position(const Vector2&);
+
     float get_angle() const;
+    void set_angle(float);
 
     Vector2 get_world_center() const;
     Vector2 get_local_center() const;

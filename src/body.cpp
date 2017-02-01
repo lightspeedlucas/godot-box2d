@@ -23,7 +23,16 @@ BodyB2::~BodyB2()
     entity->GetWorld()->DestroyBody(entity);
 }
 
-void BodyB2::set_transform(const Vector2 &position, float angle)
+Matrix32 BodyB2::get_transform() const
+{
+    return GD(entity->GetTransform());
+}
+void BodyB2::set_transform(const Matrix32 &matrix)
+{
+    entity->SetTransform(B2(matrix.get_origin()), matrix.get_rotation());
+}
+
+void BodyB2::set_position_and_angle(const Vector2 &position, float angle)
 {
     entity->SetTransform(B2(position), angle);
 }
@@ -33,9 +42,19 @@ Vector2 BodyB2::get_position() const
     return GD(entity->GetPosition());
 }
 
+void BodyB2::set_position(const Vector2 &position)
+{
+    entity->SetTransform(B2(position), entity->GetAngle());
+}
+
 float BodyB2::get_angle() const
 {
     return entity->GetAngle();
+}
+
+void BodyB2::set_angle(float angle)
+{
+    entity->SetTransform(entity->GetPosition(), angle);
 }
 
 Vector2 BodyB2::get_world_center() const
@@ -259,9 +278,12 @@ WorldB2 *BodyB2::get_world() const
 
 void BodyB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("set_transform", "position:Vector2", "angle:real"), &BodyB2::set_transform);
-    ObjectTypeDB::bind_method(_MD("get_position:Vector2"), &BodyB2::get_position);
-    ObjectTypeDB::bind_method(_MD("get_angle:real"), &BodyB2::get_angle);
+    BOX2D_PROPERTY(BodyB2, transform, Variant::MATRIX32, "Matrix32");
+    
+    ObjectTypeDB::bind_method(_MD("set_position_and_angle", "position:Vector2", "angle:real"), &BodyB2::set_position_and_angle);
+
+    BOX2D_PROPERTY(BodyB2, position, Variant::VECTOR2, "Vector2");
+    BOX2D_PROPERTY(BodyB2, angle, Variant::REAL, "real");
 
     ObjectTypeDB::bind_method(_MD("get_world_center:Vector2"), &BodyB2::get_world_center);
     ObjectTypeDB::bind_method(_MD("get_local_center:Vector2"), &BodyB2::get_local_center);

@@ -1,11 +1,10 @@
-#ifndef GODOT_WORLD_B2_H
-#define GODOT_WORLD_B2_H
+#pragma once
 
-#include <object.h>
+#include <core/object.h>
 
 class WorldB2 : public Object
 {
-    OBJ_TYPE(WorldB2, Object);
+    GDCLASS(WorldB2, Object);
     BOX2D_CLASS(World);
 public:
     /** Box2D methods */
@@ -32,5 +31,3 @@ protected:
     /** Godot bindings */
 	static void _bind_methods();
 };
-
-#endif

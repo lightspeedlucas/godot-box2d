@@ -1,11 +1,10 @@
-#ifndef GODOT_CONTACT_B2_H
-#define GODOT_CONTACT_B2_H
+#pragma once
 
-#include <reference.h>
+#include <core/reference.h>
 
 class ContactB2 : public Reference
 {
-    OBJ_TYPE(ContactB2, Reference);
+    GDCLASS(ContactB2, Reference);
 public:
     /** Box2D methods */
     ContactB2(class b2Contact*);
@@ -42,5 +41,3 @@ protected:
     /** Godot bindings */
 	static void _bind_methods();
 };
-
-#endif

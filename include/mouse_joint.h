@@ -1,11 +1,10 @@
-#ifndef GODOT_MOUSE_JOINT_B2_H
-#define GODOT_MOUSE_JOINT_B2_H
+#pragma once
 
 #include "joint.h"
 
 class MouseJointB2 : public JointB2
 {
-    OBJ_TYPE(MouseJointB2, JointB2);
+    GDCLASS(MouseJointB2, JointB2);
     BOX2D_JOINT(MouseJoint);
 public:
     /** Box2D methods */
@@ -21,7 +20,7 @@ protected:
 
 class MouseJointDefB2 : public JointDefB2
 {
-    OBJ_TYPE(MouseJointDefB2, JointDefB2);
+    GDCLASS(MouseJointDefB2, JointDefB2);
 public:
     /** Lifecycle */
     MouseJointDefB2();
@@ -37,5 +36,3 @@ protected:
     /** Godot bindings */
 	static void _bind_methods();
 };
-
-#endif

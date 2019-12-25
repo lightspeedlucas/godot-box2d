@@ -21,7 +21,7 @@ WorldB2 *Box2D::world(const Vector2 &gravity)
     return memnew(WorldB2(o));
 }
 
-BodyB2 *Box2D::body(WorldB2 *world, int type, const Matrix32 &xf)
+BodyB2 *Box2D::body(WorldB2 *world, int type, const Transform2D &xf)
 {
     ERR_FAIL_NULL_V(world, NULL);
 
@@ -58,7 +58,7 @@ Ref<ShapeB2> Box2D::box(const Vector2 &extents, const Vector2 &offset, float ang
     return memnew(ShapeB2(o, true));
 }
 
-Ref<ShapeB2> Box2D::poly(const Vector2Array &vertices)
+Ref<ShapeB2> Box2D::poly(const PoolVector2Array &vertices)
 {
     auto r = vertices.read();
     auto o = new b2PolygonShape;
@@ -73,7 +73,7 @@ Ref<ShapeB2> Box2D::edge(const Vector2 &a, const Vector2 &b)
     return memnew(ShapeB2(o, true));
 }
 
-Ref<ShapeB2> Box2D::chain(const Vector2Array &vertices, bool loop)
+Ref<ShapeB2> Box2D::chain(const PoolVector2Array &vertices, bool loop)
 {
     auto r = vertices.read();
     auto o = new b2ChainShape;
@@ -98,7 +98,7 @@ bool Box2D::overlap_fixtures(FixtureB2 *a, FixtureB2 *b)
     return b2TestOverlap(fa->GetShape(), 0, fb->GetShape(), 0, ba->GetTransform(), bb->GetTransform());
 }
 
-bool Box2D::overlap_shapes(ShapeB2 *a, ShapeB2 *b, const Matrix32 &xf_a, const Matrix32 &xf_b)
+bool Box2D::overlap_shapes(ShapeB2 *a, ShapeB2 *b, const Transform2D &xf_a, const Transform2D &xf_b)
 {
     ERR_FAIL_NULL_V(a, false);
     ERR_FAIL_NULL_V(b, false);
@@ -108,27 +108,27 @@ bool Box2D::overlap_shapes(ShapeB2 *a, ShapeB2 *b, const Matrix32 &xf_a, const M
 
 void Box2D::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("world:WorldB2", "gravity:Vector2"), &Box2D::world);
-    ObjectTypeDB::bind_method(_MD("body:BodyB2", "world:WorldB2", "type:int", "transform:Matrix32"), &Box2D::body, DEFVAL(Matrix32()));
-    ObjectTypeDB::bind_method(_MD("fixture:FixtureB2", "body:BodyB2", "shape:ShapeB2", "density:real"), &Box2D::fixture);
+    ClassDB::bind_method(D_METHOD("world", "gravity"), &Box2D::world);
+    ClassDB::bind_method(D_METHOD("body", "world", "type", "transform"), &Box2D::body, DEFVAL(Transform2D()));
+    ClassDB::bind_method(D_METHOD("fixture", "body", "shape", "density"), &Box2D::fixture);
 
-    ObjectTypeDB::bind_method(_MD("circle:ShapeB2", "offset:Vector2", "radius:real"), &Box2D::circle);
-    ObjectTypeDB::bind_method(_MD("box:ShapeB2", "extents:Vector2", "offset:Vector2", "angle:real"), &Box2D::box, DEFVAL(Vector2()), DEFVAL(.0f));
-    ObjectTypeDB::bind_method(_MD("poly:ShapeB2", "vertices:Vector2Array"), &Box2D::poly);
-    ObjectTypeDB::bind_method(_MD("edge:ShapeB2", "a:Vector2", "b:Vector2"), &Box2D::edge);
-    ObjectTypeDB::bind_method(_MD("chain:ShapeB2", "vertices:Vector2Array", "loop:bool"), &Box2D::chain, DEFVAL(false));
+    ClassDB::bind_method(D_METHOD("circle", "offset", "radius"), &Box2D::circle);
+    ClassDB::bind_method(D_METHOD("box", "extents", "offset", "angle"), &Box2D::box, DEFVAL(Vector2()), DEFVAL(.0f));
+    ClassDB::bind_method(D_METHOD("poly", "vertices"), &Box2D::poly);
+    ClassDB::bind_method(D_METHOD("edge", "a", "b"), &Box2D::edge);
+    ClassDB::bind_method(D_METHOD("chain", "vertices", "loop"), &Box2D::chain, DEFVAL(false));
 
-    ObjectTypeDB::bind_method(_MD("overlap_fixtures:bool", "a:FixtureB2", "b:FixtureB2"), &Box2D::overlap_fixtures);
-    ObjectTypeDB::bind_method(_MD("overlap_shapes:bool", "a:ShapeB2", "b:ShapeB2", "xf_a:Matrix32", "xf_b:Matrix32"), &Box2D::overlap_shapes);
+    ClassDB::bind_method(D_METHOD("overlap_fixtures", "a", "b"), &Box2D::overlap_fixtures);
+    ClassDB::bind_method(D_METHOD("overlap_shapes", "a", "b", "xf_a", "xf_b"), &Box2D::overlap_shapes);
 }
 
 b2Vec2 B2(const Vector2 &v) { return b2Vec2(v.x, v.y); }
 Vector2 GD(const b2Vec2 &v) { return Vector2(v.x, v.y); }
 
-b2AABB B2(const Rect2 &v) { return b2AABB { B2(v.pos), B2(v.pos + v.size) }; }
+b2AABB B2(const Rect2 &v) { return b2AABB { B2(v.position), B2(v.position + v.size) }; }
 Rect2 GD(const b2AABB &v) { return Rect2(GD(v.lowerBound), GD(v.upperBound - v.lowerBound)); }
 
-b2Transform B2(const Matrix32 &v)
+b2Transform B2(const Transform2D &v)
 {
     Vector2 rot = v.elements[1].normalized();
     b2Transform xf;
@@ -138,7 +138,7 @@ b2Transform B2(const Matrix32 &v)
     return xf;
 }
 
-Matrix32 GD(const b2Transform &v)
+Transform2D GD(const b2Transform &v)
 {
-    return Matrix32(v.q.c, -v.q.s, v.q.s, v.q.c, v.p.x, v.p.y);
+    return Transform2D(v.q.c, -v.q.s, v.q.s, v.q.c, v.p.x, v.p.y);
 }

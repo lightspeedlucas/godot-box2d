@@ -89,19 +89,19 @@ float RevoluteJointB2::get_motor_torque(float inv_dt) const
 
 void RevoluteJointB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("get_reference_angle:real"), &RevoluteJointB2::get_reference_angle);
+    ClassDB::bind_method(D_METHOD("get_reference_angle"), &RevoluteJointB2::get_reference_angle);
 
-    ObjectTypeDB::bind_method(_MD("get_joint_angle:real"), &RevoluteJointB2::get_joint_angle);
-    ObjectTypeDB::bind_method(_MD("get_joint_speed:real"), &RevoluteJointB2::get_joint_speed);
+    ClassDB::bind_method(D_METHOD("get_joint_angle"), &RevoluteJointB2::get_joint_angle);
+    ClassDB::bind_method(D_METHOD("get_joint_speed"), &RevoluteJointB2::get_joint_speed);
 
     BOX2D_PROPERTY_BOOL(RevoluteJointB2, limit_enabled);
-    BOX2D_PROPERTY(RevoluteJointB2, lower_limit, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointB2, upper_limit, Variant::REAL, "real");
+    BOX2D_PROPERTY(RevoluteJointB2, lower_limit, Variant::REAL);
+    BOX2D_PROPERTY(RevoluteJointB2, upper_limit, Variant::REAL);
     BOX2D_PROPERTY_BOOL(RevoluteJointB2, motor_enabled);
-    BOX2D_PROPERTY(RevoluteJointB2, motor_speed, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointB2, max_motor_torque, Variant::REAL, "real");
+    BOX2D_PROPERTY(RevoluteJointB2, motor_speed, Variant::REAL);
+    BOX2D_PROPERTY(RevoluteJointB2, max_motor_torque, Variant::REAL);
 
-    ObjectTypeDB::bind_method(_MD("get_motor_torque:real", "inv_dt:real"), &RevoluteJointB2::get_motor_torque);
+    ClassDB::bind_method(D_METHOD("get_motor_torque", "inv_dt"), &RevoluteJointB2::get_motor_torque);
 }
 
 JointB2 *RevoluteJointDefB2::instance(WorldB2 *world)
@@ -208,13 +208,13 @@ void RevoluteJointDefB2::set_max_motor_torque(float o)
 
 void RevoluteJointDefB2::_bind_methods()
 {
-    BOX2D_PROPERTY(RevoluteJointDefB2, anchor_a, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(RevoluteJointDefB2, anchor_b, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(RevoluteJointDefB2, reference_angle, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointDefB2, enable_limit, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(RevoluteJointDefB2, lower_angle, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointDefB2, upper_angle, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointDefB2, enable_motor, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(RevoluteJointDefB2, motor_speed, Variant::REAL, "real");
-    BOX2D_PROPERTY(RevoluteJointDefB2, max_motor_torque, Variant::REAL, "real");
+    BOX2D_PROPERTY(RevoluteJointDefB2, anchor_a, Variant::VECTOR2);
+    BOX2D_PROPERTY(RevoluteJointDefB2, anchor_b, Variant::VECTOR2);
+    BOX2D_PROPERTY(RevoluteJointDefB2, reference_angle, Variant::REAL);
+    BOX2D_PROPERTY(RevoluteJointDefB2, enable_limit, Variant::BOOL);
+    BOX2D_PROPERTY(RevoluteJointDefB2, lower_angle, Variant::REAL);
+    BOX2D_PROPERTY(RevoluteJointDefB2, upper_angle, Variant::REAL);
+    BOX2D_PROPERTY(RevoluteJointDefB2, enable_motor, Variant::BOOL);
+    BOX2D_PROPERTY(RevoluteJointDefB2, motor_speed, Variant::REAL);
+    BOX2D_PROPERTY(RevoluteJointDefB2, max_motor_torque, Variant::REAL);
 }

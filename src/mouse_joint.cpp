@@ -49,10 +49,10 @@ void MouseJointB2::set_damping(float rhs)
 
 void MouseJointB2::_bind_methods()
 {
-    BOX2D_PROPERTY(MouseJointB2, target, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(MouseJointB2, max_force, Variant::REAL, "real");
-    BOX2D_PROPERTY(MouseJointB2, frequency, Variant::REAL, "real");
-    BOX2D_PROPERTY(MouseJointB2, damping, Variant::REAL, "real");
+    BOX2D_PROPERTY(MouseJointB2, target, Variant::VECTOR2);
+    BOX2D_PROPERTY(MouseJointB2, max_force, Variant::REAL);
+    BOX2D_PROPERTY(MouseJointB2, frequency, Variant::REAL);
+    BOX2D_PROPERTY(MouseJointB2, damping, Variant::REAL);
 }
 
 JointB2 *MouseJointDefB2::instance(WorldB2 *world)
@@ -109,8 +109,8 @@ void MouseJointDefB2::set_damping(float rhs)
 
 void MouseJointDefB2::_bind_methods()
 {
-    BOX2D_PROPERTY(MouseJointDefB2, target, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(MouseJointDefB2, max_force, Variant::REAL, "real");
-    BOX2D_PROPERTY(MouseJointDefB2, frequency, Variant::REAL, "real");
-    BOX2D_PROPERTY(MouseJointDefB2, damping, Variant::REAL, "real");
+    BOX2D_PROPERTY(MouseJointDefB2, target, Variant::VECTOR2);
+    BOX2D_PROPERTY(MouseJointDefB2, max_force, Variant::REAL);
+    BOX2D_PROPERTY(MouseJointDefB2, frequency, Variant::REAL);
+    BOX2D_PROPERTY(MouseJointDefB2, damping, Variant::REAL);
 }

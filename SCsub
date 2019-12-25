@@ -15,8 +15,6 @@ box2d_sources += Glob("Box2D/Dynamics/Joints/*.cpp")
 box2d_sources += Glob("Box2D/Rope/*.cpp")
 
 env_box2d.Append(CPPPATH=["."])
-env_box2d.Append(CPPFLAGS=['-std=c++11'])
-
 box2d_lib = env_box2d.Library("Box2D", box2d_sources)
 
 # Module source
@@ -26,8 +24,6 @@ module_sources = Glob("register_types.cpp")
 module_sources += Glob("src/*.cpp")
 
 env_module.Append(CPPPATH=[".", "include"])
-env_module.Append(CPPFLAGS=['-std=c++11'])
-
 module_lib = env_module.Library("godot-box2d", module_sources)
 
 # Add the libraries as dependencies of the final executable

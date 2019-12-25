@@ -1,11 +1,10 @@
-#ifndef GODOT_FIXTURE_B2_H
-#define GODOT_FIXTURE_B2_H
+#pragma once
 
-#include <reference.h>
+#include <core/reference.h>
 
 class FixtureB2 : public Object
 {
-    OBJ_TYPE(FixtureB2, Object);
+    GDCLASS(FixtureB2, Object);
     BOX2D_CLASS(Fixture);
 public:
     /** Box2D methods */
@@ -53,7 +52,7 @@ protected:
 
 class FixtureDefB2 : public Reference
 {
-    OBJ_TYPE(FixtureDefB2, Reference);
+    GDCLASS(FixtureDefB2, Reference);
 public:
     /** Lifecycle */
     FixtureDefB2();
@@ -83,5 +82,3 @@ protected:
     /** Godot bindings */
 	static void _bind_methods();
 };
-
-#endif

@@ -1,11 +1,10 @@
-#ifndef GODOT_REVOLUTE_JOINT_B2_H
-#define GODOT_REVOLUTE_JOINT_B2_H
+#pragma once
 
 #include "joint.h"
 
 class RevoluteJointB2 : public JointB2
 {
-    OBJ_TYPE(RevoluteJointB2, JointB2);
+    GDCLASS(RevoluteJointB2, JointB2);
     BOX2D_JOINT(RevoluteJoint);
 public:
     /** Box2D methods */
@@ -30,7 +29,7 @@ protected:
 
 class RevoluteJointDefB2 : public JointDefB2
 {
-    OBJ_TYPE(RevoluteJointDefB2, JointDefB2);
+    GDCLASS(RevoluteJointDefB2, JointDefB2);
 public:
     /** Lifecycle */
     RevoluteJointDefB2();
@@ -51,5 +50,3 @@ protected:
     /** Godot bindings */
 	static void _bind_methods();
 };
-
-#endif

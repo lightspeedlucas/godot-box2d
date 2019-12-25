@@ -1,5 +1,5 @@
 
-#include <func_ref.h>
+#include <core/func_ref.h>
 #include <godot_box2d.h>
 #include "world.h"
 
@@ -123,21 +123,21 @@ void WorldB2::set_metadata(const Variant &rhs)
 
 void WorldB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("step", "timeStep:real", "velocityIterations:int", "positionIterations:int"), &WorldB2::step);
-    ObjectTypeDB::bind_method(_MD("clear_forces"), &WorldB2::clear_forces);
+    ClassDB::bind_method(D_METHOD("step", "timeStep", "velocityIterations", "positionIterations"), &WorldB2::step);
+    ClassDB::bind_method(D_METHOD("clear_forces"), &WorldB2::clear_forces);
 
-    ObjectTypeDB::bind_method(_MD("query_aabb", "callback:FuncRef", "aabb:Rect2"), &WorldB2::query_aabb);
-    ObjectTypeDB::bind_method(_MD("ray_cast", "callback:FuncRef", "a:Vector2", "b:Vector2"), &WorldB2::ray_cast);
+    ClassDB::bind_method(D_METHOD("query_aabb", "callback", "aabb"), &WorldB2::query_aabb);
+    ClassDB::bind_method(D_METHOD("ray_cast", "callback", "a", "b"), &WorldB2::ray_cast);
 
-    BOX2D_PROPERTY(WorldB2, gravity, Variant::VECTOR2, "Vector2");
+    BOX2D_PROPERTY(WorldB2, gravity, Variant::VECTOR2);
 
-    ObjectTypeDB::bind_method(_MD("is_locked"), &WorldB2::is_locked);
+    ClassDB::bind_method(D_METHOD("is_locked"), &WorldB2::is_locked);
 
-    BOX2D_PROPERTY(WorldB2, auto_clear_forces, Variant::BOOL, "bool");
+    BOX2D_PROPERTY(WorldB2, auto_clear_forces, Variant::BOOL);
 
-    ObjectTypeDB::bind_method(_MD("shift_origin", "new_origin:Vector2"), &WorldB2::shift_origin);
+    ClassDB::bind_method(D_METHOD("shift_origin", "new_origin"), &WorldB2::shift_origin);
 
-    BOX2D_PROPERTY(WorldB2, metadata, Variant::NIL, "Variant");
+    BOX2D_PROPERTY(WorldB2, metadata, Variant::NIL);
 }
 
 WorldB2 *WorldB2::get(const b2World *o)

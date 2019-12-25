@@ -67,19 +67,19 @@ bool JointB2::get_collide_connected() const
 
 void JointB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("get_body_a:BodyB2"), &JointB2::get_body_a);
-    ObjectTypeDB::bind_method(_MD("get_body_b:BodyB2"), &JointB2::get_body_b);
+    ClassDB::bind_method(D_METHOD("get_body_a"), &JointB2::get_body_a);
+    ClassDB::bind_method(D_METHOD("get_body_b"), &JointB2::get_body_b);
 
-    ObjectTypeDB::bind_method(_MD("get_anchor_a:Vector2"), &JointB2::get_anchor_a);
-    ObjectTypeDB::bind_method(_MD("get_anchor_b:Vector2"), &JointB2::get_anchor_b);
+    ClassDB::bind_method(D_METHOD("get_anchor_a"), &JointB2::get_anchor_a);
+    ClassDB::bind_method(D_METHOD("get_anchor_b"), &JointB2::get_anchor_b);
 
-    ObjectTypeDB::bind_method(_MD("get_reaction_force:Vector2", "inv_dt:real"), &JointB2::get_reaction_force);
-    ObjectTypeDB::bind_method(_MD("get_reaction_torque:real", "inv_dt:real"), &JointB2::get_reaction_torque);
+    ClassDB::bind_method(D_METHOD("get_reaction_force", "inv_dt"), &JointB2::get_reaction_force);
+    ClassDB::bind_method(D_METHOD("get_reaction_torque", "inv_dt"), &JointB2::get_reaction_torque);
 
-    BOX2D_PROPERTY(JointB2, metadata, Variant::NIL, "Variant");
+    BOX2D_PROPERTY(JointB2, metadata, Variant::NIL);
 
-    ObjectTypeDB::bind_method(_MD("is_active:bool"), &JointB2::is_active);
-    ObjectTypeDB::bind_method(_MD("get_collide_connected:bool"), &JointB2::get_collide_connected);
+    ClassDB::bind_method(D_METHOD("is_active"), &JointB2::is_active);
+    ClassDB::bind_method(D_METHOD("get_collide_connected"), &JointB2::get_collide_connected);
 }
 
 JointB2 *JointB2::get(const b2Joint *o)
@@ -129,9 +129,9 @@ void JointDefB2::set_collide_connected(bool o)
 
 void JointDefB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("instance:JointB2", "world:WorldB2"), &JointDefB2::instance);
+    ClassDB::bind_method(D_METHOD("instance", "world"), &JointDefB2::instance);
 
-    BOX2D_PROPERTY(JointDefB2, body_a, Variant::OBJECT, "BodyB2");
-    BOX2D_PROPERTY(JointDefB2, body_b, Variant::OBJECT, "BodyB2");
-    BOX2D_PROPERTY(JointDefB2, collide_connected, Variant::BOOL, "bool");
+    BOX2D_PROPERTY(JointDefB2, body_a, Variant::OBJECT);
+    BOX2D_PROPERTY(JointDefB2, body_b, Variant::OBJECT);
+    BOX2D_PROPERTY(JointDefB2, collide_connected, Variant::BOOL);
 }

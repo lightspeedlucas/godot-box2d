@@ -95,7 +95,7 @@ Dictionary FixtureB2::ray_cast(const Vector2 &a, const Vector2 &b, int child) co
 {
     b2RayCastInput input { B2(a), B2(b), 1.f };
     b2RayCastOutput out;
-    Dictionary r(true);
+    Dictionary r;
 
     if (entity->RayCast(&out, input, child))
     {
@@ -111,7 +111,7 @@ Dictionary FixtureB2::get_mass_data() const
     b2MassData data;
     entity->GetMassData(&data);
 
-    Dictionary r(true);
+    Dictionary r;
     r["mass"] = data.mass;
     r["center"] = GD(data.center);
     r["inertia"] = data.I;
@@ -155,32 +155,30 @@ Rect2 FixtureB2::get_aabb(int child) const
 
 void FixtureB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("get_shape:ShapeB2"), &FixtureB2::get_shape);
+    ClassDB::bind_method(D_METHOD("get_shape"), &FixtureB2::get_shape);
 
-    ObjectTypeDB::bind_method(_MD("is_sensor:bool"), &FixtureB2::is_sensor);
-    ObjectTypeDB::bind_method(_MD("set_sensor", "enabled:bool"), &FixtureB2::set_sensor);
-    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "sensor"), _SCS("set_sensor"), _SCS("is_sensor"));
+    BOX2D_PROPERTY_BOOL(FixtureB2, sensor);
 
-    BOX2D_PROPERTY(FixtureB2, filter_category, Variant::INT, "int");
-    BOX2D_PROPERTY(FixtureB2, filter_mask, Variant::INT, "int");
-    BOX2D_PROPERTY(FixtureB2, filter_group, Variant::INT, "int");
+    BOX2D_PROPERTY(FixtureB2, filter_category, Variant::INT);
+    BOX2D_PROPERTY(FixtureB2, filter_mask, Variant::INT);
+    BOX2D_PROPERTY(FixtureB2, filter_group, Variant::INT);
 
-    ObjectTypeDB::bind_method(_MD("refilter"), &FixtureB2::refilter);
+    ClassDB::bind_method(D_METHOD("refilter"), &FixtureB2::refilter);
 
-    ObjectTypeDB::bind_method(_MD("get_body:BodyB2"), &FixtureB2::get_body);
+    ClassDB::bind_method(D_METHOD("get_body"), &FixtureB2::get_body);
 
-    BOX2D_PROPERTY(FixtureB2, metadata, Variant::NIL, "Variant");
+    BOX2D_PROPERTY(FixtureB2, metadata, Variant::NIL);
 
-    ObjectTypeDB::bind_method(_MD("test_point:bool", "point:Vector2"), &FixtureB2::test_point);
-    ObjectTypeDB::bind_method(_MD("ray_cast:Dictionary", "a:Vector2", "b:Vector2", "childIndex:int"), &FixtureB2::ray_cast, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("test_point", "point"), &FixtureB2::test_point);
+    ClassDB::bind_method(D_METHOD("ray_cast", "a", "b", "childIndex"), &FixtureB2::ray_cast, DEFVAL(0));
 
-    ObjectTypeDB::bind_method(_MD("get_mass_data:Dictionary"), &FixtureB2::get_mass_data);
+    ClassDB::bind_method(D_METHOD("get_mass_data"), &FixtureB2::get_mass_data);
 
-    BOX2D_PROPERTY(FixtureB2, density, Variant::REAL, "real");
-    BOX2D_PROPERTY(FixtureB2, friction, Variant::REAL, "real");
-    BOX2D_PROPERTY(FixtureB2, restitution, Variant::REAL, "real");
+    BOX2D_PROPERTY(FixtureB2, density, Variant::REAL);
+    BOX2D_PROPERTY(FixtureB2, friction, Variant::REAL);
+    BOX2D_PROPERTY(FixtureB2, restitution, Variant::REAL);
 
-    ObjectTypeDB::bind_method(_MD("get_aabb:Rect2", "childIndex:int"), &FixtureB2::get_aabb, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("get_aabb", "childIndex"), &FixtureB2::get_aabb, DEFVAL(0));
 }
 
 FixtureB2 *FixtureB2::get(const b2Fixture *o)
@@ -302,14 +300,14 @@ void FixtureDefB2::set_metadata(const Variant& rhs)
 
 void FixtureDefB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("instance:FixtureB2", "body:BodyB2"), &FixtureDefB2::instance);
+    ClassDB::bind_method(D_METHOD("instance", "body"), &FixtureDefB2::instance);
 
-    BOX2D_PROPERTY(FixtureDefB2, shape, Variant::OBJECT, "ShapeB2");
-    BOX2D_PROPERTY(FixtureDefB2, friction, Variant::REAL, "real");
-    BOX2D_PROPERTY(FixtureDefB2, restitution, Variant::REAL, "real");
-    BOX2D_PROPERTY(FixtureDefB2, density, Variant::REAL, "real");
-    BOX2D_PROPERTY(FixtureDefB2, sensor, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(FixtureDefB2, filter_category, Variant::INT, "int");
-    BOX2D_PROPERTY(FixtureDefB2, filter_mask, Variant::INT, "int");
-    BOX2D_PROPERTY(FixtureDefB2, filter_group, Variant::INT, "int");
+    BOX2D_PROPERTY(FixtureDefB2, shape, Variant::OBJECT);
+    BOX2D_PROPERTY(FixtureDefB2, friction, Variant::REAL);
+    BOX2D_PROPERTY(FixtureDefB2, restitution, Variant::REAL);
+    BOX2D_PROPERTY(FixtureDefB2, density, Variant::REAL);
+    BOX2D_PROPERTY(FixtureDefB2, sensor, Variant::BOOL);
+    BOX2D_PROPERTY(FixtureDefB2, filter_category, Variant::INT);
+    BOX2D_PROPERTY(FixtureDefB2, filter_mask, Variant::INT);
+    BOX2D_PROPERTY(FixtureDefB2, filter_group, Variant::INT);
 }

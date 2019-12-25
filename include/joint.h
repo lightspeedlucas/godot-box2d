@@ -1,11 +1,10 @@
-#ifndef GODOT_JOINT_B2_H
-#define GODOT_JOINT_B2_H
+#pragma once
 
-#include <reference.h>
+#include <core/reference.h>
 
 class JointB2 : public Object
 {
-    OBJ_TYPE(JointB2, Object);
+    GDCLASS(JointB2, Object);
     BOX2D_CLASS(Joint);
 public:
     /** Box2D methods */
@@ -30,7 +29,7 @@ protected:
 
 class JointDefB2 : public Reference
 {
-    OBJ_TYPE(JointDefB2, Reference);
+    GDCLASS(JointDefB2, Reference);
 public:
     /** Lifecycle */
     virtual class JointB2 *instance(class WorldB2*) = 0;
@@ -50,5 +49,3 @@ protected:
     /** Godot bindings */
 	static void _bind_methods();
 };
-
-#endif

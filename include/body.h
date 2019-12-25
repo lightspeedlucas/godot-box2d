@@ -1,16 +1,15 @@
-#ifndef GODOT_BODY_B2_H
-#define GODOT_BODY_B2_H
+#pragma once
 
-#include <object.h>
+#include <core/reference.h>
 
 class BodyB2 : public Object
 {
-    OBJ_TYPE(BodyB2, Object);
+    GDCLASS(BodyB2, Object);
     BOX2D_CLASS(Body);
 public:
     /** Box2D methods */
-    Matrix32 get_transform() const;
-    void set_transform(const Matrix32&);
+    Transform2D get_transform() const;
+    void set_transform(const Transform2D&);
     
     void set_position_and_angle(const Vector2 &position, float angle);
 
@@ -90,7 +89,7 @@ protected:
 
 class BodyDefB2 : public Reference
 {
-    OBJ_TYPE(BodyDefB2, Reference);
+    GDCLASS(BodyDefB2, Reference);
 public:
     /** Lifecycle */
     BodyDefB2();
@@ -117,7 +116,7 @@ public:
 
 protected:
     /** Internal definition */
-    class b2BodyDef *def;
+    struct b2BodyDef *def;
     Variant metadata;
 
 protected:
@@ -127,5 +126,3 @@ protected:
 
 // BOX2D_GET_SET\(([^,]+), (\w+)\);
 // $1 FixtureDefB2::get_$2() const\n{\n\treturn def->$2;\n}\n\nvoid FixtureDefB2::set_$2($1 rhs)\n{\n\tdef->$2 = rhs;\n}\n
-
-#endif

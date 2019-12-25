@@ -95,21 +95,21 @@ void ContactB2::set_tangent_speed(float rhs)
 
 void ContactB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("is_touching:bool"), &ContactB2::is_touching);
+    ClassDB::bind_method(D_METHOD("is_touching"), &ContactB2::is_touching);
 
     BOX2D_PROPERTY_BOOL(ContactB2, enabled);
 
-    ObjectTypeDB::bind_method(_MD("get_fixture_a:FixtureB2"), &ContactB2::get_fixture_a);
-    ObjectTypeDB::bind_method(_MD("get_child_index_a:int"), &ContactB2::get_child_index_a);
+    ClassDB::bind_method(D_METHOD("get_fixture_a"), &ContactB2::get_fixture_a);
+    ClassDB::bind_method(D_METHOD("get_child_index_a"), &ContactB2::get_child_index_a);
 
-    ObjectTypeDB::bind_method(_MD("get_fixture_b:FixtureB2"), &ContactB2::get_fixture_b);
-    ObjectTypeDB::bind_method(_MD("get_child_index_b:int"), &ContactB2::get_child_index_b);
+    ClassDB::bind_method(D_METHOD("get_fixture_b"), &ContactB2::get_fixture_b);
+    ClassDB::bind_method(D_METHOD("get_child_index_b"), &ContactB2::get_child_index_b);
 
-    BOX2D_PROPERTY(ContactB2, friction, Variant::REAL, "real");
-    ObjectTypeDB::bind_method(_MD("reset_friction"), &ContactB2::reset_friction);
+    BOX2D_PROPERTY(ContactB2, friction, Variant::REAL);
+    ClassDB::bind_method(D_METHOD("reset_friction"), &ContactB2::reset_friction);
 
-    BOX2D_PROPERTY(ContactB2, restitution, Variant::REAL, "real");
-    ObjectTypeDB::bind_method(_MD("reset_restitution"), &ContactB2::reset_restitution);
+    BOX2D_PROPERTY(ContactB2, restitution, Variant::REAL);
+    ClassDB::bind_method(D_METHOD("reset_restitution"), &ContactB2::reset_restitution);
 
-    BOX2D_PROPERTY(ContactB2, tangent_speed, Variant::REAL, "real");
+    BOX2D_PROPERTY(ContactB2, tangent_speed, Variant::REAL);
 }

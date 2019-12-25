@@ -23,11 +23,11 @@ BodyB2::~BodyB2()
     entity->GetWorld()->DestroyBody(entity);
 }
 
-Matrix32 BodyB2::get_transform() const
+Transform2D BodyB2::get_transform() const
 {
     return GD(entity->GetTransform());
 }
-void BodyB2::set_transform(const Matrix32 &matrix)
+void BodyB2::set_transform(const Transform2D &matrix)
 {
     entity->SetTransform(B2(matrix.get_origin()), matrix.get_rotation());
 }
@@ -132,7 +132,7 @@ Dictionary BodyB2::get_mass_data() const
     b2MassData data;
     entity->GetMassData(&data);
 
-    Dictionary r(true);
+    Dictionary r;
     r["mass"] = data.mass;
     r["center"] = GD(data.center);
     r["inertia"] = data.I;
@@ -278,40 +278,40 @@ WorldB2 *BodyB2::get_world() const
 
 void BodyB2::_bind_methods()
 {
-    BOX2D_PROPERTY(BodyB2, transform, Variant::MATRIX32, "Matrix32");
+    BOX2D_PROPERTY(BodyB2, transform, Variant::TRANSFORM2D);
     
-    ObjectTypeDB::bind_method(_MD("set_position_and_angle", "position:Vector2", "angle:real"), &BodyB2::set_position_and_angle);
+    ClassDB::bind_method(D_METHOD("set_position_and_angle", "position", "angle"), &BodyB2::set_position_and_angle);
 
-    BOX2D_PROPERTY(BodyB2, position, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(BodyB2, angle, Variant::REAL, "real");
+    BOX2D_PROPERTY(BodyB2, position, Variant::VECTOR2);
+    BOX2D_PROPERTY(BodyB2, angle, Variant::REAL);
 
-    ObjectTypeDB::bind_method(_MD("get_world_center:Vector2"), &BodyB2::get_world_center);
-    ObjectTypeDB::bind_method(_MD("get_local_center:Vector2"), &BodyB2::get_local_center);
+    ClassDB::bind_method(D_METHOD("get_world_center"), &BodyB2::get_world_center);
+    ClassDB::bind_method(D_METHOD("get_local_center"), &BodyB2::get_local_center);
 
-    BOX2D_PROPERTY(BodyB2, linear_velocity, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(BodyB2, angular_velocity, Variant::REAL, "real");
+    BOX2D_PROPERTY(BodyB2, linear_velocity, Variant::VECTOR2);
+    BOX2D_PROPERTY(BodyB2, angular_velocity, Variant::REAL);
 
-    ObjectTypeDB::bind_method(_MD("apply_force_at", "force:Vector2", "point:Vector2", "wake:bool"), &BodyB2::apply_force_at, DEFVAL(true));
-    ObjectTypeDB::bind_method(_MD("apply_force", "force:Vector2", "wake:bool"), &BodyB2::apply_force, DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("apply_force_at", "force", "point", "wake"), &BodyB2::apply_force_at, DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("apply_force", "force", "wake"), &BodyB2::apply_force, DEFVAL(true));
 
-    ObjectTypeDB::bind_method(_MD("apply_torque", "torque:real", "wake:bool"), &BodyB2::apply_torque, DEFVAL(true));
-    ObjectTypeDB::bind_method(_MD("apply_angular_impulse", "impulse:real", "wake:bool"), &BodyB2::apply_angular_impulse, DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("apply_torque", "torque", "wake"), &BodyB2::apply_torque, DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("apply_angular_impulse", "impulse", "wake"), &BodyB2::apply_angular_impulse, DEFVAL(true));
 
-    ObjectTypeDB::bind_method(_MD("apply_impulse_at", "impulse:Vector2", "point:Vector2", "wake:bool"), &BodyB2::apply_impulse_at, DEFVAL(true));
-    ObjectTypeDB::bind_method(_MD("apply_impulse", "impulse:Vector2", "wake:bool"), &BodyB2::apply_impulse, DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("apply_impulse_at", "impulse", "point", "wake"), &BodyB2::apply_impulse_at, DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("apply_impulse", "impulse", "wake"), &BodyB2::apply_impulse, DEFVAL(true));
 
-    ObjectTypeDB::bind_method(_MD("get_mass:real"), &BodyB2::get_mass);
-    ObjectTypeDB::bind_method(_MD("get_inertia:real"), &BodyB2::get_inertia);
+    ClassDB::bind_method(D_METHOD("get_mass"), &BodyB2::get_mass);
+    ClassDB::bind_method(D_METHOD("get_inertia"), &BodyB2::get_inertia);
 
-    ObjectTypeDB::bind_method(_MD("get_mass_data:Dictionary"), &BodyB2::get_mass_data);
-    ObjectTypeDB::bind_method(_MD("set_mass_data", "mass:real", "inertia:real", "com:Vector2"), &BodyB2::set_mass_data);
-    ObjectTypeDB::bind_method(_MD("reset_mass_data"), &BodyB2::reset_mass_data);
+    ClassDB::bind_method(D_METHOD("get_mass_data"), &BodyB2::get_mass_data);
+    ClassDB::bind_method(D_METHOD("set_mass_data", "mass", "inertia", "com"), &BodyB2::set_mass_data);
+    ClassDB::bind_method(D_METHOD("reset_mass_data"), &BodyB2::reset_mass_data);
 
-    ObjectTypeDB::bind_method(_MD("get_linear_velocity_at:Vector2", "point:Vector2"), &BodyB2::get_linear_velocity_at);
+    ClassDB::bind_method(D_METHOD("get_linear_velocity_at", "point"), &BodyB2::get_linear_velocity_at);
 
-    BOX2D_PROPERTY(BodyB2, linear_damping, Variant::REAL, "real");
-    BOX2D_PROPERTY(BodyB2, angular_damping, Variant::REAL, "real");
-    BOX2D_PROPERTY(BodyB2, gravity_scale, Variant::REAL, "real");
+    BOX2D_PROPERTY(BodyB2, linear_damping, Variant::REAL);
+    BOX2D_PROPERTY(BodyB2, angular_damping, Variant::REAL);
+    BOX2D_PROPERTY(BodyB2, gravity_scale, Variant::REAL);
     BOX2D_PROPERTY_ENUM(BodyB2, body_type, "STATIC,DYNAMIC,KINEMATIC");
 
     BOX2D_PROPERTY_BOOL(BodyB2, bullet);
@@ -320,16 +320,16 @@ void BodyB2::_bind_methods()
     BOX2D_PROPERTY_BOOL(BodyB2, active);
     BOX2D_PROPERTY_BOOL(BodyB2, fixed_rotation);
 
-    ObjectTypeDB::bind_method(_MD("get_fixture_list:Array"), &BodyB2::get_fixture_list);
-    ObjectTypeDB::bind_method(_MD("get_joint_list:Array"), &BodyB2::get_joint_list);
+    ClassDB::bind_method(D_METHOD("get_fixture_list"), &BodyB2::get_fixture_list);
+    ClassDB::bind_method(D_METHOD("get_joint_list"), &BodyB2::get_joint_list);
 
-    BOX2D_PROPERTY(BodyB2, metadata, Variant::NIL, "Variant");
+    BOX2D_PROPERTY(BodyB2, metadata, Variant::NIL);
 
-    ObjectTypeDB::bind_method(_MD("get_world:WorldB2"), &BodyB2::get_world);
+    ClassDB::bind_method(D_METHOD("get_world"), &BodyB2::get_world);
 
-    ObjectTypeDB::bind_integer_constant(get_type_static(), "DYNAMIC", b2_dynamicBody);
-    ObjectTypeDB::bind_integer_constant(get_type_static(), "KINEMATIC", b2_kinematicBody);
-    ObjectTypeDB::bind_integer_constant(get_type_static(), "STATIC", b2_staticBody);
+    ClassDB::bind_integer_constant(get_class_static(), StringName(), "DYNAMIC", b2_dynamicBody);
+    ClassDB::bind_integer_constant(get_class_static(), StringName(), "KINEMATIC", b2_kinematicBody);
+    ClassDB::bind_integer_constant(get_class_static(), StringName(), "STATIC", b2_staticBody);
 }
 
 BodyB2 *BodyB2::get(const b2Body *o)
@@ -500,20 +500,20 @@ void BodyDefB2::set_metadata(const Variant& rhs)
 
 void BodyDefB2::_bind_methods()
 {
-    ObjectTypeDB::bind_method(_MD("instance:BodyB2", "world:WorldB2"), &BodyDefB2::instance);
+    ClassDB::bind_method(D_METHOD("instance", "world"), &BodyDefB2::instance);
 
-    BOX2D_PROPERTY(BodyDefB2, body_type, Variant::INT, "int");
-    BOX2D_PROPERTY(BodyDefB2, position, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(BodyDefB2, angle, Variant::REAL, "real");
-    BOX2D_PROPERTY(BodyDefB2, linear_velocity, Variant::VECTOR2, "Vector2");
-    BOX2D_PROPERTY(BodyDefB2, angular_velocity, Variant::REAL, "real");
-    BOX2D_PROPERTY(BodyDefB2, linear_damping, Variant::REAL, "real");
-    BOX2D_PROPERTY(BodyDefB2, angular_damping, Variant::REAL, "real");
-    BOX2D_PROPERTY(BodyDefB2, allow_sleep, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(BodyDefB2, awake, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(BodyDefB2, fixed_rotation, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(BodyDefB2, bullet, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(BodyDefB2, active, Variant::BOOL, "bool");
-    BOX2D_PROPERTY(BodyDefB2, gravity_scale, Variant::REAL, "real");
-    BOX2D_PROPERTY(BodyDefB2, metadata, Variant::NIL, "Variant");
+    BOX2D_PROPERTY(BodyDefB2, body_type, Variant::INT);
+    BOX2D_PROPERTY(BodyDefB2, position, Variant::VECTOR2);
+    BOX2D_PROPERTY(BodyDefB2, angle, Variant::REAL);
+    BOX2D_PROPERTY(BodyDefB2, linear_velocity, Variant::VECTOR2);
+    BOX2D_PROPERTY(BodyDefB2, angular_velocity, Variant::REAL);
+    BOX2D_PROPERTY(BodyDefB2, linear_damping, Variant::REAL);
+    BOX2D_PROPERTY(BodyDefB2, angular_damping, Variant::REAL);
+    BOX2D_PROPERTY(BodyDefB2, allow_sleep, Variant::BOOL);
+    BOX2D_PROPERTY(BodyDefB2, awake, Variant::BOOL);
+    BOX2D_PROPERTY(BodyDefB2, fixed_rotation, Variant::BOOL);
+    BOX2D_PROPERTY(BodyDefB2, bullet, Variant::BOOL);
+    BOX2D_PROPERTY(BodyDefB2, active, Variant::BOOL);
+    BOX2D_PROPERTY(BodyDefB2, gravity_scale, Variant::REAL);
+    BOX2D_PROPERTY(BodyDefB2, metadata, Variant::NIL);
 }

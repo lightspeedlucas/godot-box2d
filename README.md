@@ -11,7 +11,7 @@ Godot Engine already contains a very good, albeit simple, 2D physics engine impl
 
 ### Features
 
-- Integrates Box2D 2.3.2 into Godot as a C++ module.
+- Integrates Box2D 3.1.2 into Godot as a C++ module.
 - No setup required. If you can build Godot from source, you can use this module.
 - Does **not** disable or replace Godot's 2D physics engine.
 - Provides Object wrappers for every Box2D entity
@@ -21,7 +21,7 @@ Godot Engine already contains a very good, albeit simple, 2D physics engine impl
 ### Compilation
 
 - Clone the contents of this repository into `<Your Godot source folder>/modules/box2d`
-  - Please note that this project is meant to be used with Godot's **2.1** branch.
+  - Please note that this project is meant to be used with Godot's **3.1** branch.
 - Build and run Godot normally
 
 ### How to use

@@ -11,7 +11,7 @@ ShapeB2::ShapeB2(b2Shape *entity, bool exclusive)
 
 ShapeB2::~ShapeB2()
 {
-    if (exclusive) memdelete(entity);
+    if (exclusive && entity) memdelete(entity);
 }
 
 bool ShapeB2::test_point(const Transform2D &xf, const Vector2 &point)

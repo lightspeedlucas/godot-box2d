@@ -112,7 +112,7 @@ JointB2 *RevoluteJointDefB2::instance(WorldB2 *world)
 }
 
 RevoluteJointDefB2::RevoluteJointDefB2()
-    : JointDefB2(new b2RevoluteJointDef)
+    : JointDefB2(memnew(b2RevoluteJointDef))
 {
 }
 

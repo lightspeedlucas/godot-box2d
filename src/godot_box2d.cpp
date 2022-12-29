@@ -17,7 +17,7 @@ Box2D::~Box2D()
 
 WorldB2 *Box2D::world(const Vector2 &gravity)
 {
-    auto o = new b2World(B2(gravity));
+    auto o = memnew(b2World(B2(gravity)));
     return memnew(WorldB2(o));
 }
 
@@ -45,7 +45,7 @@ FixtureB2 *Box2D::fixture(BodyB2 *body, const ShapeB2 *shape, float density)
 
 Ref<ShapeB2> Box2D::circle(const Vector2 &offset, float radius)
 {
-    auto o = new b2CircleShape;
+    auto o = memnew(b2CircleShape);
     o->m_p = B2(offset);
     o->m_radius = radius;
     return memnew(ShapeB2(o, true));
@@ -53,7 +53,7 @@ Ref<ShapeB2> Box2D::circle(const Vector2 &offset, float radius)
 
 Ref<ShapeB2> Box2D::box(const Vector2 &extents, const Vector2 &offset, float angle)
 {
-    auto o = new b2PolygonShape;
+    auto o = memnew(b2PolygonShape);
     o->SetAsBox(extents.x, extents.y, B2(offset), angle);
     return memnew(ShapeB2(o, true));
 }
@@ -61,14 +61,14 @@ Ref<ShapeB2> Box2D::box(const Vector2 &extents, const Vector2 &offset, float ang
 Ref<ShapeB2> Box2D::poly(const PoolVector2Array &vertices)
 {
     auto r = vertices.read();
-    auto o = new b2PolygonShape;
+    auto o = memnew(b2PolygonShape);
     o->Set((b2Vec2*)r.ptr(), vertices.size());
     return memnew(ShapeB2(o, true));
 }
 
 Ref<ShapeB2> Box2D::edge(const Vector2 &a, const Vector2 &b)
 {
-    auto o = new b2EdgeShape;
+    auto o = memnew(b2EdgeShape);
     o->Set(B2(a), B2(b));
     return memnew(ShapeB2(o, true));
 }
@@ -76,7 +76,7 @@ Ref<ShapeB2> Box2D::edge(const Vector2 &a, const Vector2 &b)
 Ref<ShapeB2> Box2D::chain(const PoolVector2Array &vertices, bool loop)
 {
     auto r = vertices.read();
-    auto o = new b2ChainShape;
+    auto o = memnew(b2ChainShape);
     if (loop)
         o->CreateLoop((b2Vec2*)r.ptr(), vertices.size());
     else
@@ -130,15 +130,16 @@ Rect2 GD(const b2AABB &v) { return Rect2(GD(v.lowerBound), GD(v.upperBound - v.l
 
 b2Transform B2(const Transform2D &v)
 {
-    Vector2 rot = v.elements[1].normalized();
     b2Transform xf;
-    xf.p = { v.elements[2].x, v.elements[2].y };
-    xf.q.s = rot.x;
-    xf.q.c = rot.y;
+    xf.p.x = v.elements[2].x;
+    xf.p.y = v.elements[2].y;
+    Vector2 rot = v.elements[0].normalized();
+    xf.q.c = rot.x;
+    xf.q.s = rot.y;
     return xf;
 }
 
 Transform2D GD(const b2Transform &v)
 {
-    return Transform2D(v.q.c, -v.q.s, v.q.s, v.q.c, v.p.x, v.p.y);
+    return Transform2D(v.q.c, v.q.s, -v.q.s, v.q.c, v.p.x, v.p.y);
 }

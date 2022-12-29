@@ -94,7 +94,7 @@ JointDefB2::JointDefB2(b2JointDef *def)
 
 JointDefB2::~JointDefB2()
 {
-    delete def;
+    memdelete(def);
 }
 
 BodyB2 *JointDefB2::get_body_a() const

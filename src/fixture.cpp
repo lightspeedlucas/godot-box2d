@@ -187,13 +187,13 @@ FixtureB2 *FixtureB2::get(const b2Fixture *o)
 }
 
 FixtureDefB2::FixtureDefB2()
-    : def(new b2FixtureDef)
+    : def(memnew(b2FixtureDef))
 {
 }
 
 FixtureDefB2::~FixtureDefB2()
 {
-    delete def;
+    memdelete(def);
 }
 
 FixtureB2 *FixtureDefB2::instance(BodyB2 *body)

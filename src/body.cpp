@@ -338,13 +338,13 @@ BodyB2 *BodyB2::get(const b2Body *o)
 }
 
 BodyDefB2::BodyDefB2()
-    : def(new b2BodyDef)
+    : def(memnew(b2BodyDef))
 {
 }
 
 BodyDefB2::~BodyDefB2()
 {
-    delete def;
+    memdelete(def);
 }
 
 BodyB2 *BodyDefB2::instance(WorldB2 *world)

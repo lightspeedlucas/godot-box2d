@@ -63,7 +63,7 @@ JointB2 *MouseJointDefB2::instance(WorldB2 *world)
 }
 
 MouseJointDefB2::MouseJointDefB2()
-    : JointDefB2(new b2MouseJointDef)
+    : JointDefB2(memnew(b2MouseJointDef))
 {
 }
 

@@ -17,7 +17,7 @@ WorldB2::~WorldB2()
     while (auto *o = entity->GetBodyList())
         memdelete_notnull(BodyB2::get(o));
 
-    delete entity;
+    memdelete(entity);
 }
 
 void WorldB2::step(float timeStep, int velocityIterations, int positionIterations)
